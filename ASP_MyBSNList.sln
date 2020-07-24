@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP_MyBSNList", "ASP_MyBSNList\ASP_MyBSNList.csproj", "{522182BD-9DA6-476B-85D5-73C33A218863}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP_MyBSNList_Android", "ASP_MyBSNList_Android\ASP_MyBSNList_Android.csproj", "{23201135-8451-486C-A0AE-F6036B8CEDF7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP_MyBSNList_Library", "ASP_MyBSNList_Library\ASP_MyBSNList_Library.csproj", "{D0569868-2577-444F-A554-6FE7BB1098FC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP_MyBSNList_Frontend", "ASP_MyBSNList_Frontend\ASP_MyBSNList_Frontend.csproj", "{9074B6E3-8F1F-4B1F-B837-B3368A9B951F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP_MyBSNList_Server", "ASP_MyBSNList_Server\ASP_MyBSNList_Server.csproj", "{522182BD-9DA6-476B-85D5-73C33A218863}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,6 +17,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{23201135-8451-486C-A0AE-F6036B8CEDF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23201135-8451-486C-A0AE-F6036B8CEDF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23201135-8451-486C-A0AE-F6036B8CEDF7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{23201135-8451-486C-A0AE-F6036B8CEDF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23201135-8451-486C-A0AE-F6036B8CEDF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23201135-8451-486C-A0AE-F6036B8CEDF7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D0569868-2577-444F-A554-6FE7BB1098FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0569868-2577-444F-A554-6FE7BB1098FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0569868-2577-444F-A554-6FE7BB1098FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0569868-2577-444F-A554-6FE7BB1098FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9074B6E3-8F1F-4B1F-B837-B3368A9B951F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9074B6E3-8F1F-4B1F-B837-B3368A9B951F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9074B6E3-8F1F-4B1F-B837-B3368A9B951F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9074B6E3-8F1F-4B1F-B837-B3368A9B951F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{522182BD-9DA6-476B-85D5-73C33A218863}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{522182BD-9DA6-476B-85D5-73C33A218863}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{522182BD-9DA6-476B-85D5-73C33A218863}.Release|Any CPU.ActiveCfg = Release|Any CPU
