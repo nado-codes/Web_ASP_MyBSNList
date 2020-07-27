@@ -8,35 +8,39 @@ namespace ASP_MyBSNList_Android.Data
 {
     public class RestService
     {
-        private static readonly string API_URL = "https://localhost:44316/api";
+        private static readonly string API_URL = "http://192.168.0.2";
 
         private static RestService _singleton;
-        private HttpClient client;
+        private HttpClient _client;
+        private Action<HelloModel> _responseHandler;
 
-        public void Init()
+        public static void Init(Action<HelloModel> responseHandler)
         {
-            _singleton = new RestService();
+            _singleton = new RestService(responseHandler);
         }
 
-        public RestService()
+        public RestService(Action<HelloModel> responseHandler)
         {
-            client = new HttpClient();
+            _client = new HttpClient();
+            _responseHandler = responseHandler;
         }
 
-        public static async Task<HelloModel> GetHello()
+        public static async void GetHello()
         {
-            Uri uri = new Uri(API_URL+"/helloWorld");
+            Uri uri = new Uri(API_URL/*+"/helloWorld"*/);
 
-            HttpResponseMessage response = await _singleton.client.GetAsync(uri);
+            HttpResponseMessage response = await _singleton._client.GetAsync(uri);
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                //HelloModel model = new HelloModel() {}
+                HelloModel model = new HelloModel() { };
 
-                return new HelloModel();
+                _singleton._responseHandler(model);
             }
             else
-                return null;
+            {
+                _singleton._responseHandler(null);
+            }
         }
     }
 }

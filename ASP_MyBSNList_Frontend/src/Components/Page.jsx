@@ -12,7 +12,7 @@ const Page = (props) => {
     useEffect (() =>{
         loadData();
         setPageName(props.pageName);
-    },[]);
+    });
 
     const loadData = async () => {
         const helloURL = 'api/helloWorld';

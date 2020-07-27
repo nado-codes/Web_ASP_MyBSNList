@@ -25,7 +25,15 @@ namespace ASP_MyBSNList_Android
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
 
-            Console.WriteLine(RestService.GetHello());
+            RestService.Init(APIResponseHandler);
+            FindViewById<Button>(Resource.Id.btnGo).Click += (object sender, EventArgs e) => {
+                RestService.GetHello();
+            };
+        }
+
+        private void APIResponseHandler(object response)
+        {
+            //Console.WriteLine(RestService.GetHello());
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

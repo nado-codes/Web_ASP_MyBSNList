@@ -3,11 +3,9 @@ import Button from '@material-ui/core/Button';
 
 const headerButton = (props) =>
 {
-    const [text,setText] = useState((props != undefined) ? props.text : "");
-
     return (
         <div className="headerButton">
-            <Button variant="contained" color="primary">{text}</Button>
+            <Button variant="contained" color="primary" onClick={() => {props.click(props.text)}}>{props.text}</Button>
         </div>
     );
 }

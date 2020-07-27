@@ -7,6 +7,11 @@ import Grid from '@material-ui/core/Grid';
 
 const Header = (props) =>
 {
+    const clickHandler = (pageName) => {
+        console.log("selected "+pageName);
+        props.changePage(pageName);
+    }
+
     return(
         <div className="header">
 
@@ -16,15 +21,14 @@ const Header = (props) =>
                 </Grid>
 
                 <Grid item style={{ flex : 1, textAlign: 'left'}}>
-                    <HeaderButton text="A List"/>
-                    <HeaderButton text="B List"/>
-                    <HeaderButton text="C List"/>
+                    <HeaderButton click={clickHandler} text="A List"/>
+                    <HeaderButton click={clickHandler} text="B List"/>
+                    <HeaderButton click={clickHandler} text="C List"/>
                 </Grid>
             </Grid>
         </div>
     );
 }
 
-Header.PropTypes
 
 export default Header;

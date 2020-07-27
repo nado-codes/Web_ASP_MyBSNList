@@ -15,10 +15,15 @@ function App() {
     cList : "C List",
   };
 
+  const changePage = (pageName) => {
+    console.log("changedPage: "+pageName);
+    setSelectedView(pageName);
+  }
+
   return (
     <div className="App">
-      <Header/>
-      <Page pageName={pageNames[selectedView]}/>
+      <Header changePage={changePage}/>
+      <Page pageName={selectedView}/>
     </div>
   );
 }
