@@ -21,9 +21,7 @@ const Header = (props) =>
                 </Grid>
 
                 <Grid item style={{ flex : 1, textAlign: 'left'}}>
-                    <HeaderButton click={clickHandler} text="A List"/>
-                    <HeaderButton click={clickHandler} text="B List"/>
-                    <HeaderButton click={clickHandler} text="C List"/>
+                    <HeaderButton click={clickHandler} text="List"/>
                 </Grid>
             </Grid>
         </div>

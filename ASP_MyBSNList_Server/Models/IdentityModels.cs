@@ -22,6 +22,18 @@ namespace ASP_MyBSNList.Models
     {
         public DbSet<HelloModel> Greetings { get; set; }
 
+        public DbSet<Status> Statuses { get; set; }
+        public DbSet<Reason> Reasons { get; set; }
+        public DbSet<CommunicationType> CommunicationTypes { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Occupation> Occupations { get; set; }
+        public DbSet<Industry> Industries { get; set; }
+        public DbSet<MartialStatus> MartialStatuses { get; set; }
+        public DbSet<AgeGroup> AgeGroups { get; set; }
+        public DbSet<Person> People { get; set; }
+        public DbSet<PersonInfo> PeopleInfo { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

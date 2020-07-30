@@ -7,13 +7,15 @@ import Page from './Components/Page';
 
 function App() {
 
-  const [selectedView,setSelectedView] = useState("aList");
-  
   const pageNames = {
-    aList : "A List",
-    bList : "B List",
-    cList : "C List",
+    AList : "A List",
+    BList : "B List",
+    CList : "C List",
   };
+
+  const [selectedView,setSelectedView] = useState(pageNames.AList);
+  
+  
 
   const changePage = (pageName) => {
     console.log("changedPage: "+pageName);
