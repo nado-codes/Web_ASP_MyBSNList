@@ -13,7 +13,7 @@ function App() {
     CList : "C List",
   };
 
-  const [selectedView,setSelectedView] = useState(pageNames.AList);
+  const [selectedView,setSelectedView] = useState("List");
   
   
 
