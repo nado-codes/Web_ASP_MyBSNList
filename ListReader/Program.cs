@@ -75,7 +75,12 @@ namespace ListReader
                 for (int j = 0; j < accessors.Length; ++j)
                 {
                     string cellValue = cells[j - cellIndexOffset];
-                    string cellData = j < cells.Length ? (cellValue != "" ? cellValue : "UKN") : "UKN";
+                    string cellData = j < cells.Length ? (cellValue != "" ? cellValue : string.Empty) : string.Empty;
+
+                    if (cellData == "TRUE")
+                        cellData = "1";
+                    else if (cellData == "FALSE")
+                        cellData = "0";
 
                     row.Add(accessors[j], cellData);
                 }
