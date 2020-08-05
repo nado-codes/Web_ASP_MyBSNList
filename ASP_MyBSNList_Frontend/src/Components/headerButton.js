@@ -5,7 +5,7 @@ const headerButton = (props) =>
 {
     return (
         <div className="headerButton">
-            <Button variant="contained" color="primary" onClick={() => {props.click(props.text)}}>{props.text}</Button>
+            <Button variant="contained" color="primary" component={props.component} onClick={ props.click ? () => {props.click(props.text)} : ()=>{}}>{props.text}</Button>
         </div>
     );
 }

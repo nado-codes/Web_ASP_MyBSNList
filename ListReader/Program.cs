@@ -37,12 +37,36 @@ namespace ListReader
 
             foreach (Dictionary<string, string> row in listData.Rows)
             {
-                Console.WriteLine(string.Join(",",row.Values.ToArray()));
-                //Console.WriteLine(row["List"]);
+                Person newPerson;
+                PersonInfo newPersonInfo;
+                int rowId = listData.Rows.IndexOf(row) + 1;
+
+                //CreatePerson(out newPerson,out newPersonInfo, rowId,row);
             }
 
             Console.WriteLine("Done!");
             Console.ReadKey();
+        }
+
+        
+        /*public static void CreatePerson(out Person person, out PersonInfo personInfo, int rowId, Dictionary<string,string> rowData)
+        {
+            person = new Person()
+            {
+                Id = rowId,
+                infoId = rowId,
+                Name = rowData["Name"]
+            };
+
+            personInfo = new PersonInfo()
+            {
+
+            }
+        }*/
+        
+        public static string CreateSQL(string[] columns, string rowData)
+        {
+            return string.Empty;
         }
 
         public static ListData LoadList(string path)

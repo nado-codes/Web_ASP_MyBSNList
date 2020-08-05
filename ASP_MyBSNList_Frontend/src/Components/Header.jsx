@@ -1,24 +1,39 @@
-import React from 'react';
+import React ,{useState} from 'react';
 import PropTypes from 'prop-types';
 import '../site.css';
 import HeaderButton from './headerButton';
-import IconButton from '@material-ui/core/IconButton';
 
 import Grid from '@material-ui/core/Grid';
-import SettingsIcon from '@material-ui/icons/Settings';
+import {Dialog, DialogText, DialogContent, Fab} from '@material-ui/core/';
 
 const Header = (props) =>
 {
+    const [isShowFileUpload,setIsShowFileUpload] = useState(false);
+
+
     const clickHandler = (pageName) => {
         console.log("selected "+pageName);
         props.changePage(pageName);
     }
 
-    const selectSetting = () => {
+    const selectFileHandler = (event) => {
+        const path = event.target.value;
+        const file = event.target.files[0];
 
-    }
-    const closeSettings = () => {
+        // Create an object of formData 
+        const formData = new FormData(); 
+     
+        // Update the formData object 
+        formData.append( 
+            "myFile", 
+            file, 
+            file.name 
+        ); 
 
+        formData.entries.forEach(entry => {
+            console.log(entry);
+        });
+        
     }
 
     return(
@@ -31,13 +46,22 @@ const Header = (props) =>
 
                 <Grid item style={{ flex : 0.75, textAlign: 'left'}}>
                     <HeaderButton click={clickHandler} text="List"/>
-                </Grid>
 
-                {/*<Grid item style={{ flex : 0.25, textAlign: 'right', width: '5px'}}>
-                    <IconButton color="primary" aria-label="upload picture" component="span">
-                        <SettingsIcon/>
-                    </IconButton>
-                </Grid>*/}
+                    
+                    <label htmlFor="upload-photo">
+                        <input
+                                style={{display: 'none'}}
+                                id="upload-photo"
+                                name="upload-photo"
+                                type="file"
+                                accept=".csv"
+                                onChange={selectFileHandler}
+                        />
+
+                        <HeaderButton text="Upload List" component="span"/>
+                        
+                    </label>
+                </Grid>
             </Grid>
         </div>
     );

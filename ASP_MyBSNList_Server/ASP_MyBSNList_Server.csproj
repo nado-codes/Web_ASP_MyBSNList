@@ -212,6 +212,10 @@
     <Compile Include="Migrations\202008012134041_POP_Tables-Select-All_v3.Designer.cs">
       <DependentUpon>202008012134041_POP_Tables-Select-All_v3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008041055332_DirTest.cs" />
+    <Compile Include="Migrations\202008041055332_DirTest.Designer.cs">
+      <DependentUpon>202008041055332_DirTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ModelEnums.cs" />
@@ -317,6 +321,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008012134041_POP_Tables-Select-All_v3.resx">
       <DependentUpon>202008012134041_POP_Tables-Select-All_v3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008041055332_DirTest.resx">
+      <DependentUpon>202008041055332_DirTest.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
