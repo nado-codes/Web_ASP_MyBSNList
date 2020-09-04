@@ -6,6 +6,9 @@ import HeaderButton from './headerButton';
 import Grid from '@material-ui/core/Grid';
 import {Dialog, DialogText, DialogContent, Fab} from '@material-ui/core/';
 
+import axios from 'axios';
+import Papa from 'papaparse'
+
 const Header = (props) =>
 {
     const [isShowFileUpload,setIsShowFileUpload] = useState(false);
@@ -17,23 +20,30 @@ const Header = (props) =>
     }
 
     const selectFileHandler = (event) => {
-        const path = event.target.value;
         const file = event.target.files[0];
 
         // Create an object of formData 
-        const formData = new FormData(); 
-     
-        // Update the formData object 
-        formData.append( 
-            "myFile", 
-            file, 
-            file.name 
-        ); 
+        Papa.parse(file, {
+            complete: parseComplete,
+            header: true
+          });
 
-        formData.entries.forEach(entry => {
-            console.log(entry);
-        });
         
+    }
+
+    const parseComplete = (result)  => {
+        var data = result.data;
+
+        console.log(data);
+
+        axios({
+            method: 'post',
+            url: '/api/listUpload',
+            responseType: 'json',
+            data : data,
+          })
+
+        //axios.post("api/listUpload", data);
     }
 
     return(

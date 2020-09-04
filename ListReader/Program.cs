@@ -35,14 +35,14 @@ namespace ListReader
         {
             ListData listData = LoadList("./list.csv");
 
-            foreach (Dictionary<string, string> row in listData.Rows)
+            /*foreach (Dictionary<string, string> row in listData.Rows)
             {
                 Person newPerson;
                 PersonInfo newPersonInfo;
                 int rowId = listData.Rows.IndexOf(row) + 1;
 
                 //CreatePerson(out newPerson,out newPersonInfo, rowId,row);
-            }
+            }*/
 
             Console.WriteLine("Done!");
             Console.ReadKey();

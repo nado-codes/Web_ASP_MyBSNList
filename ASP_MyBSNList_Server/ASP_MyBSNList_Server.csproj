@@ -178,9 +178,13 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HelloWorldController.cs" />
+    <Compile Include="Controllers\Api\HelloWorldController.cs" />
+    <Compile Include="Controllers\Api\ListUploadController.cs" />
+    <Compile Include="Controllers\Api\PersonController.cs" />
+    <Compile Include="Controllers\DbController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Dtos\PersonDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -216,14 +220,80 @@
     <Compile Include="Migrations\202008041055332_DirTest.Designer.cs">
       <DependentUpon>202008041055332_DirTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008201946594_AppModel_Id_IntToByte.cs" />
+    <Compile Include="Migrations\202008201946594_AppModel_Id_IntToByte.Designer.cs">
+      <DependentUpon>202008201946594_AppModel_Id_IntToByte.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008202025259_AppModel_Id_IntToByte_v2.cs" />
+    <Compile Include="Migrations\202008202025259_AppModel_Id_IntToByte_v2.Designer.cs">
+      <DependentUpon>202008202025259_AppModel_Id_IntToByte_v2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008202030143_AppModel_Id_IntToByte_v3.cs" />
+    <Compile Include="Migrations\202008202030143_AppModel_Id_IntToByte_v3.Designer.cs">
+      <DependentUpon>202008202030143_AppModel_Id_IntToByte_v3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008202033207_AppModel_Id_IntToByte_v31.cs" />
+    <Compile Include="Migrations\202008202033207_AppModel_Id_IntToByte_v31.Designer.cs">
+      <DependentUpon>202008202033207_AppModel_Id_IntToByte_v31.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008202033459_AppModel_Id_IntToByte_v4.cs" />
+    <Compile Include="Migrations\202008202033459_AppModel_Id_IntToByte_v4.Designer.cs">
+      <DependentUpon>202008202033459_AppModel_Id_IntToByte_v4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008202040514_add-migration AppModel_Id_IntToByte_v5.cs" />
+    <Compile Include="Migrations\202008202040514_add-migration AppModel_Id_IntToByte_v5.Designer.cs">
+      <DependentUpon>202008202040514_add-migration AppModel_Id_IntToByte_v5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008211344562_UpdateTable-Persons.cs" />
+    <Compile Include="Migrations\202008211344562_UpdateTable-Persons.Designer.cs">
+      <DependentUpon>202008211344562_UpdateTable-Persons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008220652347_Pop-Unknowns.cs" />
+    <Compile Include="Migrations\202008220652347_Pop-Unknowns.Designer.cs">
+      <DependentUpon>202008220652347_Pop-Unknowns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008220718012_Person-SetupNullables.cs" />
+    <Compile Include="Migrations\202008220718012_Person-SetupNullables.Designer.cs">
+      <DependentUpon>202008220718012_Person-SetupNullables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008220720292_PersonSetupNullablesv2.cs" />
+    <Compile Include="Migrations\202008220720292_PersonSetupNullablesv2.Designer.cs">
+      <DependentUpon>202008220720292_PersonSetupNullablesv2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008220723038_PeopleSetupNonNullables.cs" />
+    <Compile Include="Migrations\202008220723038_PeopleSetupNonNullables.Designer.cs">
+      <DependentUpon>202008220723038_PeopleSetupNonNullables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008220734321_Update-Columns.cs" />
+    <Compile Include="Migrations\202008220734321_Update-Columns.Designer.cs">
+      <DependentUpon>202008220734321_Update-Columns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008220748022_Update_Columns_v2.cs" />
+    <Compile Include="Migrations\202008220748022_Update_Columns_v2.Designer.cs">
+      <DependentUpon>202008220748022_Update_Columns_v2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008242050487_DBUpdate_250820.cs" />
+    <Compile Include="Migrations\202008242050487_DBUpdate_250820.Designer.cs">
+      <DependentUpon>202008242050487_DBUpdate_250820.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009041854216_UPDATE_NullableDates.cs" />
+    <Compile Include="Migrations\202009041854216_UPDATE_NullableDates.Designer.cs">
+      <DependentUpon>202009041854216_UPDATE_NullableDates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009041915039_UPDATE_Dates-ToDateTime2.cs" />
+    <Compile Include="Migrations\202009041915039_UPDATE_Dates-ToDateTime2.Designer.cs">
+      <DependentUpon>202009041915039_UPDATE_Dates-ToDateTime2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ModelEnums.cs" />
+    <Compile Include="Models\Base\AppModel.cs" />
+    <Compile Include="Models\Base\EnumModel.cs" />
+    <Compile Include="Models\Base\UnqNameModel.cs" />
+    <Compile Include="Models\EnumModels.cs" />
     <Compile Include="Models\HelloModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\AppModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\PersonInfo.cs" />
+    <Compile Include="Models\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -324,6 +394,54 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008041055332_DirTest.resx">
       <DependentUpon>202008041055332_DirTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008201946594_AppModel_Id_IntToByte.resx">
+      <DependentUpon>202008201946594_AppModel_Id_IntToByte.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008202025259_AppModel_Id_IntToByte_v2.resx">
+      <DependentUpon>202008202025259_AppModel_Id_IntToByte_v2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008202030143_AppModel_Id_IntToByte_v3.resx">
+      <DependentUpon>202008202030143_AppModel_Id_IntToByte_v3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008202033207_AppModel_Id_IntToByte_v31.resx">
+      <DependentUpon>202008202033207_AppModel_Id_IntToByte_v31.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008202033459_AppModel_Id_IntToByte_v4.resx">
+      <DependentUpon>202008202033459_AppModel_Id_IntToByte_v4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008202040514_add-migration AppModel_Id_IntToByte_v5.resx">
+      <DependentUpon>202008202040514_add-migration AppModel_Id_IntToByte_v5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008211344562_UpdateTable-Persons.resx">
+      <DependentUpon>202008211344562_UpdateTable-Persons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008220652347_Pop-Unknowns.resx">
+      <DependentUpon>202008220652347_Pop-Unknowns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008220718012_Person-SetupNullables.resx">
+      <DependentUpon>202008220718012_Person-SetupNullables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008220720292_PersonSetupNullablesv2.resx">
+      <DependentUpon>202008220720292_PersonSetupNullablesv2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008220723038_PeopleSetupNonNullables.resx">
+      <DependentUpon>202008220723038_PeopleSetupNonNullables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008220734321_Update-Columns.resx">
+      <DependentUpon>202008220734321_Update-Columns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008220748022_Update_Columns_v2.resx">
+      <DependentUpon>202008220748022_Update_Columns_v2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008242050487_DBUpdate_250820.resx">
+      <DependentUpon>202008242050487_DBUpdate_250820.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009041854216_UPDATE_NullableDates.resx">
+      <DependentUpon>202009041854216_UPDATE_NullableDates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009041915039_UPDATE_Dates-ToDateTime2.resx">
+      <DependentUpon>202009041915039_UPDATE_Dates-ToDateTime2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -6,6 +6,9 @@ using System.Web;
 
 namespace ASP_MyBSNList.Models
 {
+    /// <summary>
+    /// A sample model only. Used for database testing.
+    /// </summary>
     public class HelloModel
     {
         public byte Id { get; set; }

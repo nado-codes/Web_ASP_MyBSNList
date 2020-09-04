@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -32,12 +34,6 @@ namespace ASP_MyBSNList.Models
         public DbSet<MartialStatus> MartialStatuses { get; set; }
         public DbSet<AgeGroup> AgeGroups { get; set; }
         public DbSet<Person> People { get; set; }
-        public DbSet<PersonInfo> PeopleInfo { get; set; }
-
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
-        {
-        }
 
         public static ApplicationDbContext Create()
         {

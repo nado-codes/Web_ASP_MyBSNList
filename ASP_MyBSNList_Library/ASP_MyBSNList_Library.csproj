@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Base\**" />
+    <EmbeddedResource Remove="Models\Base\**" />
+    <None Remove="Models\Base\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\EnumModels.cs" />
+    <Compile Remove="Models\Person.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.ComponentModel.DataAnnotations.dll</HintPath>
     </Reference>

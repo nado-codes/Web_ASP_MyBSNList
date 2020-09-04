@@ -9,18 +9,11 @@ using System.Web.Mvc;
 
 namespace ASP_MyBSNList.Controllers
 {
-    public class HelloWorldController : ApiController
+    public class HelloWorldController : DbController
     {
-        private ApplicationDbContext _context;
-
-        public HelloWorldController()
-        {
-            _context = new ApplicationDbContext();
-        }
-
         public HelloModel GetDefault()
         {
-            var model = _context.Greetings.SingleOrDefault(m => m.Id == 1);
+            var model = Context.Greetings.SingleOrDefault(m => m.Id == 1);
 
             return model;
         }

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP_MyBSNList_Server", "ASP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListReader", "ListReader\ListReader.csproj", "{D93D7D94-7FC4-493B-B1C7-FFB66E8A53C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP_MyBSNList_Tests", "ASP_MyBSNList_Tests\ASP_MyBSNList_Tests.csproj", "{1B3F948B-1E46-4538-B52C-F08A209EE8AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{D93D7D94-7FC4-493B-B1C7-FFB66E8A53C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D93D7D94-7FC4-493B-B1C7-FFB66E8A53C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D93D7D94-7FC4-493B-B1C7-FFB66E8A53C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B3F948B-1E46-4538-B52C-F08A209EE8AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B3F948B-1E46-4538-B52C-F08A209EE8AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B3F948B-1E46-4538-B52C-F08A209EE8AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B3F948B-1E46-4538-B52C-F08A209EE8AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
