@@ -1,16 +1,37 @@
 import React ,{useState} from 'react';
+import {makeStyles} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import '../site.css';
 import HeaderButton from './headerButton';
 
 import Grid from '@material-ui/core/Grid';
-import {Dialog, DialogText, DialogContent, Fab} from '@material-ui/core/';
 
 import axios from 'axios';
 import Papa from 'papaparse'
 
+const useStyles = makeStyles((theme) => ({
+    header: {
+        backgroundColor : '#242424',
+        width : '100%',
+        marginBottom : '-100px',
+        paddingLeft: '20px',
+
+        
+    },
+
+    '&h1': {
+        color: 'red',
+    },
+
+    title: {
+        color: 'red',
+    }
+}));
+
 const Header = (props) =>
 {
+    const {theme} = props;
+    const classes = useStyles(theme);
     const [isShowFileUpload,setIsShowFileUpload] = useState(false);
 
 
@@ -47,33 +68,27 @@ const Header = (props) =>
     }
 
     return(
-        <div className="header">
-
-            <Grid container alignItems={'center'}>
-                <Grid item style={{ flex : 0.25, textAlign: 'left', width: '20px'}}>
-                    <h1>ASP My BSN List</h1>
-                </Grid>
-
-                <Grid item style={{ flex : 0.75, textAlign: 'left'}}>
-                    <HeaderButton click={clickHandler} text="List"/>
-
-                    
-                    <label htmlFor="upload-photo">
-                        <input
-                                style={{display: 'none'}}
-                                id="upload-photo"
-                                name="upload-photo"
-                                type="file"
-                                accept=".csv"
-                                onChange={selectFileHandler}
-                        />
-
-                        <HeaderButton text="Upload List" component="span"/>
-                        
-                    </label>
-                </Grid>
+        <Grid className={classes.header} container alignItems={'center'}>
+            <Grid item style={{ flex : 0.5, textAlign: 'left', width: '20px'}}>
+                <h1>ASP My BSN List</h1>
             </Grid>
-        </div>
+            {/*<Grid item style={{ flex : 0.75, textAlign: 'left'}}>
+                <HeaderButton click={clickHandler} text="List"/>
+                
+                <label htmlFor="upload-photo">
+                    <input
+                            style={{display: 'none'}}
+                            id="upload-photo"
+                            name="upload-photo"
+                            type="file"
+                            accept=".csv"
+                            onChange={selectFileHandler}
+                    />
+                    <HeaderButton text="Upload List" component="span"/>
+                    
+                </label>
+            </Grid>*/}
+        </Grid>
     );
 }
 

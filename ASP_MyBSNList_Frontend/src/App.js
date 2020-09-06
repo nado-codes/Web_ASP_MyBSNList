@@ -1,13 +1,18 @@
 import React, {useState} from 'react';
+import {makeStyles} from '@material-ui/core';
 import logo from './logo.svg';
 import './App.css';
 
-import Header from './Components/Header';
-import Page from './Components/Page';
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import Layout from './Layout';
+import ConversationsView from './Views/ConversationsView';
+import ConversationView from './Views/ConversationView';
 
-function App() {
+const App = (props) => {
+  const {theme} = props;
+  //const classes = useStyles(theme);
 
-  const pageNames = {
+  /*const pageNames = {
     AList : "A List",
     BList : "B List",
     CList : "C List",
@@ -21,12 +26,21 @@ function App() {
     console.log("changedPage: "+pageName);
     setSelectedView(pageName);
   }
+  
+  <Header changePage={changePage}/>
+  <Page pageName={selectedView}/>
+  
+  */
 
   return (
-    <div className="App">
-      <Header changePage={changePage}/>
-      <Page pageName={selectedView}/>
-    </div>
+    <BrowserRouter>
+      <Layout>
+        <Switch>
+          <Route path="/conversations" render={() => <ConversationsView />} />
+          <Route path="/conversation" render={() => <ConversationView />} />
+        </Switch>
+      </Layout>
+    </BrowserRouter>
   );
 }
 
