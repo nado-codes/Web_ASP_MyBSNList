@@ -6,7 +6,7 @@ import './App.css';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import Layout from './Layout';
 import ConversationsView from './Views/ConversationsView';
-import ConversationView from './Views/ConversationView';
+import PersonView from './Views/PersonView';
 
 const App = (props) => {
   const {theme} = props;
@@ -37,7 +37,7 @@ const App = (props) => {
       <Layout>
         <Switch>
           <Route path="/conversations" render={() => <ConversationsView />} />
-          <Route path="/conversation" render={() => <ConversationView />} />
+          <Route path="/person/:id" render={() => <PersonView />} />
         </Switch>
       </Layout>
     </BrowserRouter>

@@ -2,7 +2,7 @@ import React ,{useState} from 'react';
 import {makeStyles} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import '../site.css';
-import HeaderButton from './headerButton';
+import HeaderButton from './HeaderButton';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -13,18 +13,13 @@ const useStyles = makeStyles((theme) => ({
     header: {
         backgroundColor : '#242424',
         width : '100%',
-        marginBottom : '-100px',
         paddingLeft: '20px',
 
         
     },
 
-    '&h1': {
-        color: 'red',
-    },
-
     title: {
-        color: 'red',
+        color: '#FFF',
     }
 }));
 
@@ -69,13 +64,14 @@ const Header = (props) =>
 
     return(
         <Grid className={classes.header} container alignItems={'center'}>
-            <Grid item style={{ flex : 0.5, textAlign: 'left', width: '20px'}}>
-                <h1>ASP My BSN List</h1>
+            <Grid item style={{ marginRight: '50px', textAlign: 'left', width: 'auto'}}>
+                <h1 className={classes.title}>ASP My BSN List</h1>
             </Grid>
-            {/*<Grid item style={{ flex : 0.75, textAlign: 'left'}}>
-                <HeaderButton click={clickHandler} text="List"/>
+
+            <Grid item style={{ flex : 0.75, textAlign: 'left'}}>
+                <HeaderButton linkTo="/conversations" text="Conversations"/>
                 
-                <label htmlFor="upload-photo">
+                {/*<label htmlFor="upload-photo">
                     <input
                             style={{display: 'none'}}
                             id="upload-photo"
@@ -86,8 +82,8 @@ const Header = (props) =>
                     />
                     <HeaderButton text="Upload List" component="span"/>
                     
-                </label>
-            </Grid>*/}
+                </label>*/}
+            </Grid>
         </Grid>
     );
 }

@@ -178,6 +178,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\ConversationsController.cs" />
     <Compile Include="Controllers\Api\HelloWorldController.cs" />
     <Compile Include="Controllers\Api\ListUploadController.cs" />
     <Compile Include="Controllers\Api\PersonController.cs" />
@@ -283,6 +284,10 @@
     <Compile Include="Migrations\202009041915039_UPDATE_Dates-ToDateTime2.cs" />
     <Compile Include="Migrations\202009041915039_UPDATE_Dates-ToDateTime2.Designer.cs">
       <DependentUpon>202009041915039_UPDATE_Dates-ToDateTime2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009131307052_DB_1309.cs" />
+    <Compile Include="Migrations\202009131307052_DB_1309.Designer.cs">
+      <DependentUpon>202009131307052_DB_1309.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -442,6 +447,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202009041915039_UPDATE_Dates-ToDateTime2.resx">
       <DependentUpon>202009041915039_UPDATE_Dates-ToDateTime2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009131307052_DB_1309.resx">
+      <DependentUpon>202009131307052_DB_1309.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

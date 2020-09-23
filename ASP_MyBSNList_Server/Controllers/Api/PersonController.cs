@@ -11,16 +11,14 @@ using Newtonsoft.Json.Linq;
 namespace ASP_MyBSNList.Controllers.Api
 {
     [RoutePrefix("api/person")]
-    public class PersonController : ApiController
+    public class PersonController : DbController
     {
         [HttpPost]
         public virtual int CreatePerson(PersonDto personData)
         {
             try
             {
-                ApplicationDbContext dbContext = DbController.Context;
-
-                Person oldPerson = dbContext.People.SingleOrDefault(p => p.Name == personData.Name);
+                Person oldPerson = Context.People.SingleOrDefault(p => p.Name == personData.Name);
 
                 //..dont add the same person twice!
                 if (oldPerson != null)
@@ -31,21 +29,21 @@ namespace ASP_MyBSNList.Controllers.Api
                 {
                     Name = personData.Name,
                     List = personData.List,
-                    MartialStatusId = dbContext.MartialStatuses.SingleOrDefault(m => m.Name == personData.MartialStatus)?.Id,
+                    MartialStatusId = Context.MartialStatuses.SingleOrDefault(m => m.Name == personData.MartialStatus)?.Id,
                     HasKids = personData.HasKids,
-                    AgeGroupId = dbContext.AgeGroups.SingleOrDefault(m => m.Name == personData.AgeGroup)?.Id,
-                    CityId = dbContext.Cities.SingleOrDefault(m => m.Name == personData.CurrentCity)?.Id,
-                    IndustryId = dbContext.Industries.SingleOrDefault(m => m.Name == personData.Industry)?.Id,
-                    NationalityId = dbContext.Countries.SingleOrDefault(m => m.Name == personData.Nationality)?.Id,
-                    OccupationId = dbContext.Occupations.SingleOrDefault(m => m.Name == personData.Occupation)?.Id,
-                    PrimaryCommunicationId = dbContext.CommunicationTypes.SingleOrDefault(m => m.Name == personData.Primary)?.Id,
-                    SecondaryCommunicationId = dbContext.CommunicationTypes.SingleOrDefault(m => m.Name == personData.Secondary)?.Id,
+                    AgeGroupId = Context.AgeGroups.SingleOrDefault(m => m.Name == personData.AgeGroup)?.Id,
+                    CityId = Context.Cities.SingleOrDefault(m => m.Name == personData.CurrentCity)?.Id,
+                    IndustryId = Context.Industries.SingleOrDefault(m => m.Name == personData.Industry)?.Id,
+                    NationalityId = Context.Countries.SingleOrDefault(m => m.Name == personData.Nationality)?.Id,
+                    OccupationId = Context.Occupations.SingleOrDefault(m => m.Name == personData.Occupation)?.Id,
+                    PrimaryCommunicationId = Context.CommunicationTypes.SingleOrDefault(m => m.Name == personData.Primary)?.Id,
+                    SecondaryCommunicationId = Context.CommunicationTypes.SingleOrDefault(m => m.Name == personData.Secondary)?.Id,
                     LastContact = personData.LastContact,
                     DateAdded = personData.DateAdded,
                 };
 
-                dbContext.People.Add(newPerson);
-                dbContext.SaveChanges();
+                Context.People.Add(newPerson);
+                Context.SaveChanges();
 
                 return 1;
             }
@@ -53,6 +51,15 @@ namespace ASP_MyBSNList.Controllers.Api
             {
                 return 0;
             }
+        }
+
+        [HttpGet]
+        [Route("{id:int}")]
+        public virtual Person GetPersonById(int id)
+        {
+            Person dbPerson = Context.People.SingleOrDefault(p => p.Id == id);
+            dbPerson.Name = dbPerson.Name.GetHashCode() + "";
+            return dbPerson;
         }
     }
 }
