@@ -7,3 +7,4 @@
 packages
 ASP_MyBSNList_Server/App_Data/aspnet-ASP_MyBSNList-20200717024621_log.ldf
 ASP_MyBSNList_Server/App_Data/aspnet-ASP_MyBSNList-20200717024621.mdf
+*.mdf
