@@ -14,37 +14,23 @@ namespace ASP_MyBSNList.Controllers.Api
         [Route("")]
         public IEnumerable<Person> GetRandomPersons(int maxNumberOfPersons = 5)
         {
-            List<Person> persons = new List<Person>();
-            List<Person> dbPersons = Context.People.OrderBy(p => p.Id).ToList();
-            int loopCount = 0;
-            Random rand = new Random();
+            var rand = new Random();
 
-            /*while (persons.Count < maxNumberOfPersons && loopCount < Context.People.Count())
+            var persons = new List<Person>();
+            var dbPersons = Context.People.OrderBy(p => p.Id).ToList();
+
+            for (var i = 0; i < Math.Min(maxNumberOfPersons, dbPersons.Count); i++)
             {
-                int index = rand.Next(1, dbPersons.Count() - 1);
-                Person person = dbPersons.FirstOrDefault(p => p.Id == index);
+                var index = rand.Next(0, dbPersons.Count-1);
+                var person = dbPersons[index];
 
-                if (person == null)
-                    continue;
+                if (person == null) throw new ApplicationException("Found null person in table or false index");
 
-                if(!persons.Contains(person))
-                    persons.Add(person);
-
-                loopCount++;
-            }*/
-
-            for (int i = 0; i < maxNumberOfPersons; i++)
-            {
-                int index = rand.Next(dbPersons.FirstOrDefault().Id, dbPersons.LastOrDefault().Id);
-                Person person = dbPersons.SingleOrDefault(p => p.Id == index);
-
-                while (persons.Contains(person) || person == null)
+                while (persons.Contains(person))
                 {
-                    index = rand.Next(dbPersons.FirstOrDefault().Id, dbPersons.LastOrDefault().Id);
+                    index = rand.Next(dbPersons.FirstOrDefault()?.Id ?? 0, dbPersons.LastOrDefault()?.Id ?? 1);
                     person = dbPersons.SingleOrDefault(p => p.Id == index);
                 }
-
-                person.Name = person.Name.GetHashCode() + "";
 
                 persons.Add(person);
             }

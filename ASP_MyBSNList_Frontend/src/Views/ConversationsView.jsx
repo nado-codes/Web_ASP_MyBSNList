@@ -44,8 +44,8 @@ const ConversationsView = (props) => {
             
             setPeople(conversationsData);
         } catch(error) {
+            console.log()
             alert(error.response.data.ExceptionMessage);
-            console.log(error);
         }
     }
 

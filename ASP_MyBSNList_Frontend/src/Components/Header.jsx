@@ -1,23 +1,21 @@
 import React ,{useState} from 'react';
 import {makeStyles} from '@material-ui/core';
-import PropTypes from 'prop-types';
+import {TextField, Paper} from '@material-ui/core';
 import '../site.css';
 import HeaderButton from './HeaderButton';
+import {Autocomplete} from '@material-ui/lab';
 
 import Grid from '@material-ui/core/Grid';
 
 import axios from 'axios';
-import Papa from 'papaparse'
+//import Papa from 'papaparse'
 
 const useStyles = makeStyles((theme) => ({
     header: {
         backgroundColor : '#242424',
         width : '100%',
         paddingLeft: '20px',
-
-        
     },
-
     title: {
         color: '#FFF',
     }
@@ -27,10 +25,11 @@ const Header = (props) =>
 {
     const {theme} = props;
     const classes = useStyles(theme);
-    const [isShowFileUpload,setIsShowFileUpload] = useState(false);
+    const [searchedUsers,setSearchedUsers] = useState([]);
+    //const [isShowFileUpload,setIsShowFileUpload] = useState(false);
 
 
-    const clickHandler = (pageName) => {
+    /*const clickHandler = (pageName) => {
         console.log("selected "+pageName);
         props.changePage(pageName);
     }
@@ -60,6 +59,34 @@ const Header = (props) =>
           })
 
         //axios.post("api/listUpload", data);
+    }*/
+
+    const handleSearchQueryChanged = async (event) => {
+
+        try
+        {
+            const query = event.target.value;
+
+            
+
+            const personsUrl = `api/person/?q=${query}`;
+
+            console.log(axios.baseUrl);
+
+            const personsData = (await axios.get(encodeURI(personsUrl))).data;
+
+            setSearchedUsers(personsData);
+        }
+        catch (error) {
+            alert(error.Response ? error.response.data.ExceptionMessage : error);
+        }
+    }
+
+    const handleLoadUser = (event,value) => {
+
+        const personId = value.Id;
+        window.location = `person/${personId}`;
+        console.log(personId);
     }
 
     return(
@@ -70,19 +97,19 @@ const Header = (props) =>
 
             <Grid item style={{ flex : 0.75, textAlign: 'left'}}>
                 <HeaderButton linkTo="/conversations" text="Conversations"/>
-                
-                {/*<label htmlFor="upload-photo">
-                    <input
-                            style={{display: 'none'}}
-                            id="upload-photo"
-                            name="upload-photo"
-                            type="file"
-                            accept=".csv"
-                            onChange={selectFileHandler}
-                    />
-                    <HeaderButton text="Upload List" component="span"/>
-                    
-                </label>*/}
+                <HeaderButton linkTo="/list" text="Lists"/>
+
+                {/*<Paper>
+                <Autocomplete
+                    id="usersSearch"
+                    options={searchedUsers}
+                    getOptionLabel={x => x.Name}
+                    style={{marginLeft : '10px'}}
+                    onChange={handleLoadUser}
+                    onInputChange={handleSearchQueryChanged}
+                    renderInput={params => <TextField {...params}/>}
+                />
+                </Paper>*/}
             </Grid>
         </Grid>
     );

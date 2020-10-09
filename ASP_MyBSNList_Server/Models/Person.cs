@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using ASP_MyBSNList.Models.Base;
+using Newtonsoft.Json;
 
 namespace ASP_MyBSNList.Models
 {
@@ -13,6 +14,8 @@ namespace ASP_MyBSNList.Models
     /// </summary>
     public class Person : AppModel
     {
+        public string SafeName => GetHashCode() + "";
+
         [Required] public string List { get; set; }
 
         public byte? Gender { get; set; }

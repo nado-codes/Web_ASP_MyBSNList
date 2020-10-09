@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Http;
 using ASP_MyBSNList.Dtos;
 using ASP_MyBSNList.Models;
+using ASP_MyBSNList.Providers;
 using Newtonsoft.Json.Linq;
 
 namespace ASP_MyBSNList.Controllers.Api
@@ -57,9 +58,14 @@ namespace ASP_MyBSNList.Controllers.Api
         [Route("{id:int}")]
         public virtual Person GetPersonById(int id)
         {
-            Person dbPerson = Context.People.SingleOrDefault(p => p.Id == id);
-            dbPerson.Name = dbPerson.Name.GetHashCode() + "";
-            return dbPerson;
+            return PersonProvider.GetPersonById(id);
+        }
+
+        [HttpGet]
+        [Route("")]
+        public virtual IEnumerable<Person> GetPersonsWithName([FromUri] string q)
+        {
+            return PersonProvider.SearchPersonsByName(q);
         }
     }
 }

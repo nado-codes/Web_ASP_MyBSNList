@@ -289,6 +289,10 @@
     <Compile Include="Migrations\202009131307052_DB_1309.Designer.cs">
       <DependentUpon>202009131307052_DB_1309.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010070216546_ADD_ForeignKeys_Persons.cs" />
+    <Compile Include="Migrations\202010070216546_ADD_ForeignKeys_Persons.Designer.cs">
+      <DependentUpon>202010070216546_ADD_ForeignKeys_Persons.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Base\AppModel.cs" />
@@ -300,6 +304,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\PersonProvider.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -450,6 +455,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202009131307052_DB_1309.resx">
       <DependentUpon>202009131307052_DB_1309.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010070216546_ADD_ForeignKeys_Persons.resx">
+      <DependentUpon>202010070216546_ADD_ForeignKeys_Persons.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
