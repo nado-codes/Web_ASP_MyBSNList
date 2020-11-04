@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using ASP_MyBSNList.Controllers.Database;
 using ASP_MyBSNList.Dtos;
 using ASP_MyBSNList.Models;
 using ASP_MyBSNList.Providers;
@@ -12,21 +13,21 @@ using Newtonsoft.Json.Linq;
 namespace ASP_MyBSNList.Controllers.Api
 {
     [RoutePrefix("api/person")]
-    public class PersonController : DbController
+    public class PersonController : ApiController
     {
         [HttpPost]
         public virtual int CreatePerson(PersonDto personData)
         {
             try
             {
-                Person oldPerson = Context.People.SingleOrDefault(p => p.Name == personData.Name);
+                Person oldPerson = DbController.Context.People.SingleOrDefault(p => p.Name == personData.Name);
 
                 //..dont add the same person twice!
                 if (oldPerson != null)
                     return 0;
 
                 //..create a new person model and pass to the db context
-                Person newPerson = new Person
+                /*Person newPerson = new Person
                 {
                     Name = personData.Name,
                     List = personData.List,
@@ -41,10 +42,10 @@ namespace ASP_MyBSNList.Controllers.Api
                     SecondaryCommunicationId = Context.CommunicationTypes.SingleOrDefault(m => m.Name == personData.Secondary)?.Id,
                     LastContact = personData.LastContact,
                     DateAdded = personData.DateAdded,
-                };
+                };*/
 
-                Context.People.Add(newPerson);
-                Context.SaveChanges();
+                //DbController.Context.People.Add(newPerson);
+                //DbController.Context.SaveChanges();
 
                 return 1;
             }
@@ -58,14 +59,23 @@ namespace ASP_MyBSNList.Controllers.Api
         [Route("{id:int}")]
         public virtual Person GetPersonById(int id)
         {
+            //IEnumerable<DbColumn> cols = DbController.PollSchema<Person>();
+
             return PersonProvider.GetPersonById(id);
         }
 
         [HttpGet]
-        [Route("")]
+        [Route("name")]
         public virtual IEnumerable<Person> GetPersonsWithName([FromUri] string q)
         {
             return PersonProvider.SearchPersonsByName(q);
+        }
+
+        [HttpGet]
+        [Route("")]
+        public virtual IEnumerable<Person> GetPersonsByList(string list)
+        {
+            return PersonProvider.GetPersonsByList(list);
         }
     }
 }

@@ -16,8 +16,8 @@ namespace ASP_MyBSNList_Tests
             string json = ConvertCsvFileToJsonObject(@"D:\Storage\Projects\Web\ASP\_MyBSNList\ListReader\bin\Debug\list.csv");
             JArray jsonArray = JArray.Parse(json);
 
-            ListUploadController listUpload = new ListUploadController();
-            listUpload.PostDefault(jsonArray);
+            ListController list = new ListController();
+            list.PostDefault(jsonArray);
         }
 
         //..This method can't handle commas properly i.e. all commas will be treated as a new field, regardless of

@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {makeStyles} from '@material-ui/core';
-import {Grid, Button, Paper} from '@material-ui/core';
+import {Grid, Button} from '@material-ui/core';
 import {NavLink} from 'react-router-dom';
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -46,18 +46,25 @@ const useStyles = makeStyles((theme) => ({
 
 const ListPerson = (props) => {
     const {theme} = props;
+    const safe = true;
     const classes = useStyles(theme);
-    const {id, name} = props;
+    const {
+        Id, 
+        Name, 
+        SafeName
+    } = props?.data ?? props;
+
+    console.log(props);
 
     return (
-        <NavLink to={"/person/"+id} className={classes.rootLink}>
+        <NavLink to={`/person/${Id}`} className={classes.rootLink}>
             <Button variant="contained" className={classes.root}>
                 <Grid container>  
                     <Grid item style={{flex: 0.075}}>
                         <AccountCircleIcon className={classes.icon}/>
                     </Grid>
                     <Grid item className={classes.body}>
-                        <p className={classes.body}>{name}</p>
+                        <p className={classes.body}>{safe ? SafeName : Name ?? "Unknown Person"}</p>
                     </Grid>
                 </Grid>
             </Button>

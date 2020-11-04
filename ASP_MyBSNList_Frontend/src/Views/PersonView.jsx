@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {useParams} from 'react-router-dom';
 import {makeStyles,
     Box,
@@ -15,7 +15,6 @@ import {makeStyles,
 
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ChatIcon from '@material-ui/icons/Chat';
-import PersonIcon from '@material-ui/icons/Person';
 import ForumIcon from '@material-ui/icons/Forum';
 import NotesIcon from '@material-ui/icons/Notes';
 
@@ -25,10 +24,9 @@ const useStyles = makeStyles((theme) => ({
     root: {
         margin: '20px',
         width: '100%',
-        height: '100%',
     },
     profileSection : {
-        marginTop: '20px',
+        marginTop: '10px',
     },
     profileTabs: {
         background: 'black',
@@ -57,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     },
     icon:
     {
-        fontSize: '400px',
+        fontSize: '300px',
     },
     buttonIcon:
     {
@@ -105,6 +103,7 @@ const PersonView = (props) => {
     const {theme} = props;
     const classes = useStyles(theme);
     const {id} = useParams();
+    const safe = true;
 
     const [personData,setPersonData] = useState(undefined);
     const personColumns = {
@@ -153,6 +152,9 @@ const PersonView = (props) => {
         Gender: {
             Id: "Gender", DisplayName: "Gender", MALE: "Male", FEMALE: "Female"
         },
+        Person: {
+            Id: "Person", DisplayName: "Person"
+        },
         EMPTYORNULL: {
             DisplayName: "Unknown "
         },
@@ -161,11 +163,7 @@ const PersonView = (props) => {
         },
     }
 
-    useEffect(() => {
-        loadPersonData();
-    },[]);
-
-    const loadPersonData = async () => {
+    const loadPersonData = useCallback(async () => {
         const personURL = 'api/person/'+id;
         const personData = (await axios({
             method:'GET',
@@ -173,10 +171,14 @@ const PersonView = (props) => {
             baseURL: '/',
         })).data;
 
-        console.log(personData);
+        //console.log(personData);
 
         setPersonData(personData);
-    }
+    },[id]);
+
+    useEffect(() => {
+        loadPersonData();
+    },[loadPersonData]);
 
     const [value, setValue] = useState(0);
 
@@ -191,16 +193,16 @@ const PersonView = (props) => {
                     <Grid item>
                         <AccountBoxIcon className={classes.icon}/>
                     </Grid>
-                    <Grid item className={classes.leftPanelDetails}>
+                    <Grid item className={classes.leftPanelDetails}> {/*LEFT DETAILS*/}
                     <Typography variant="h5" className={classes.sectionTitle}>Details</Typography>
                         <Table>
                             <TableRow>
                                 <TableCell>
                                     <Grid container direction={'column'}>
-                                        <Grid item>
+                                        <Grid item> {/*COUNTRY*/}
                                             <Typography variant="h6" className={classes.sectionTitle}>{personData?.[personColumns.Country.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.Country.DisplayName}</Typography>
                                         </Grid>
-                                        <Grid item>
+                                        <Grid item> {/*CITY*/}
                                             <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.City.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.City.DisplayName}</Typography>
                                         </Grid>
                                     </Grid>
@@ -211,10 +213,10 @@ const PersonView = (props) => {
                             <TableRow>
                                 <TableCell>
                                     <Grid container direction={'column'}>
-                                        <Grid item>
+                                        <Grid item> {/*INDUSTRY*/}
                                             <Typography variant="h6" className={classes.sectionTitle}>{personData?.[personColumns.Industry.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.Industry.DisplayName}</Typography>
                                         </Grid>
-                                        <Grid item>
+                                        <Grid item> {/*OCCUPATION*/}
                                             <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Occupation.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.Occupation.DisplayName}</Typography>
                                         </Grid>
                                     </Grid>
@@ -225,11 +227,11 @@ const PersonView = (props) => {
                 </Grid>
                 <Grid container direction={'column'} className={classes.rightPanelRoot}>
                     <Grid item>
-                        <Grid item>
-                            <Typography variant="h4" className={classes.sectionTitle}>{personData?.Name}</Typography>
+                        <Grid item>                      {/*NAME*/}
+                            <Typography variant="h4" className={classes.sectionTitle}>{(safe ? personData?.SafeName : personData?.Name) ?? personColumns.EMPTYORNULL.DisplayName+personColumns.Person.DisplayName}</Typography>
                         </Grid>
-                        <Grid container direction="row">
-                            <Box className={classes.greyRounded}><Typography className={classes.greyRoundedText} variant="h6">{personData?.[personColumns.List.Id]+personColumns.List.DisplayName ?? personColumns.NA.DisplayName}</Typography></Box> 
+                        <Grid container direction="row"> {/*LIST*/}
+                            <Box className={classes.greyRounded}><Typography className={classes.greyRoundedText} variant="h6">{(personData?.[personColumns.List.Id] ?? personColumns.NA.DisplayName) + personColumns.List.DisplayName}</Typography></Box> 
                             <Button style={{marginLeft: '140px'}}><ChatIcon className={classes.buttonIcon} /> Start Conversation</Button>
                         </Grid>
                     </Grid>
@@ -238,37 +240,37 @@ const PersonView = (props) => {
                     </Grid>
                     <Grid container direction="column" className={classes.profileSection}>
                         <Table className={classes.rightPanelTable} size="small">
-                            <TableRow>
+                            <TableRow> {/*GENDER*/}
                                 <TableCell className={classes.rightPanelTableCell}>{personColumns.Gender.DisplayName}</TableCell>
                                 <TableCell>
                                     <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Gender.Id] ? personColumns.Gender.MALE : personColumns.Gender.FEMALE ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
                             </TableRow>
-                            <TableRow>
+                            <TableRow> {/*NATIONALITY*/}
                                 <TableCell>{personColumns.Nationality.DisplayName}</TableCell>
                                 <TableCell>
                                     <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Nationality.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
                             </TableRow>
-                            <TableRow>
+                            <TableRow> {/*MARITAL STATUS*/}
                                 <TableCell>{personColumns.MaritalStatus.DisplayName}</TableCell>
                                 <TableCell>
                                     <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.MaritalStatus.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
                             </TableRow>
-                            <TableRow>
+                            <TableRow> {/*AGE GROUP*/}
                                 <TableCell>{personColumns.AgeGroup.DisplayName}</TableCell>
                                 <TableCell>
                                     <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.AgeGroup.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
                             </TableRow>
-                            <TableRow>
+                            <TableRow> {/*HAS KIDS*/}
                                 <TableCell>{personColumns.HasKids.DisplayName}</TableCell>
                                 <TableCell>
                                     <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.HasKids.Id] ? personColumns.HasKids.TRUE : personColumns.HasKids.FALSE ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
                             </TableRow>
-                            <TableRow>
+                            <TableRow> {/*LAST CONTACT*/}
                                 <TableCell>{personColumns.LastContact.DisplayName}</TableCell>
                                 <TableCell>
                                     <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.LastContact.Id] ?? personColumns.EMPTYORNULL.DisplayName}</Typography>

@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {makeStyles} from '@material-ui/core';
-import {Grid,Button} from '@material-ui/core';
+import {makeStyles, Button} from '@material-ui/core';
 import {NavLink} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     HeaderButton: {
         backgroundColor: '#363636',
         color: '#FFF',
+        marginRight: '5px',
 
         '&:hover': {
             backgroundColor: '#484848',
@@ -25,9 +25,7 @@ const HeaderButton = (props) =>
 
     return (
         <NavLink to={props.linkTo ?? "?"} className={classes.HeaderButtonLink}>
-            <Grid container>
-                <Button variant="contained" className={classes.HeaderButton} component={props.component} onClick={ props.click ? () => {props.click(props.text)} : ()=>{}}>{props.text}</Button>
-            </Grid>
+            <Button variant="contained" className={classes.HeaderButton} component={props.component} onClick={ props.click ? () => {props.click(props.text)} : ()=>{}}>{props.text}</Button>
         </NavLink>
     );
 }

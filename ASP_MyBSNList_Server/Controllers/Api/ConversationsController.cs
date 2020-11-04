@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
+using ASP_MyBSNList.Controllers.Database;
 using ASP_MyBSNList.Models;
 
 namespace ASP_MyBSNList.Controllers.Api
 {
     [RoutePrefix("api/conversations")]
-    public class ConversationsController : DbController
+    public class ConversationsController : ApiController
     {
         [HttpGet]
         [Route("")]
@@ -17,7 +18,7 @@ namespace ASP_MyBSNList.Controllers.Api
             var rand = new Random();
 
             var persons = new List<Person>();
-            var dbPersons = Context.People.OrderBy(p => p.Id).ToList();
+            var dbPersons = DbController.Context.People.OrderBy(p => p.Id).ToList();
 
             for (var i = 0; i < Math.Min(maxNumberOfPersons, dbPersons.Count); i++)
             {

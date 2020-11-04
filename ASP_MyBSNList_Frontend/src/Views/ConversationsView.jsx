@@ -1,11 +1,8 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useCallback} from 'react';
 import {makeStyles} from '@material-ui/core';
 import {Grid, Paper} from '@material-ui/core';
-import { sizing } from '@material-ui/system';
 
-import Header from '../Components/Header';
 import ListPerson from '../Components/ListPerson'
-
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,11 +28,7 @@ const ConversationsView = (props) => {
     const classes = useStyles(props);
     const [people,setPeople] = useState(undefined);
 
-    useEffect (() =>{
-        loadData();
-    },[]);
-    
-    const loadData = async () => {
+    const loadData = useCallback(async () => {
         try
         {
             const conversationsURL = 'api/conversations';
@@ -47,15 +40,19 @@ const ConversationsView = (props) => {
             console.log()
             alert(error.response.data.ExceptionMessage);
         }
-    }
+    },[setPeople]);
+
+    useEffect (() =>{
+        loadData();
+    },[loadData]);
 
     return(
       <Grid container direction={'column'} className={classes.bgLayer}>
         <Grid item>
             <h1 className={classes.heading}>Suggested</h1>
             <Paper className={classes.root}>
-                {people?.map(x => {
-                    return <ListPerson key={x?.id} id={x?.Id} name={x?.Name}/>
+                {people && people.map(x => {
+                    return (x && <ListPerson key={x?.Id} data={x}/>)
                 })}
             </Paper>
         </Grid>
