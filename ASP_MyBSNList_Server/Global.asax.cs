@@ -23,7 +23,7 @@ namespace ASP_MyBSNList
         protected void Application_BeginRequest()
         {
             HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin","http://localhost:3000");
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "GET,POST");
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
         }
     }
 }

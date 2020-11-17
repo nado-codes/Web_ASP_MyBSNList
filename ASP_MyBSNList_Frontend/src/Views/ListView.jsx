@@ -88,9 +88,10 @@ const ListView = (props) => {
                     <Grid item className={classes.tableContainer}>
                         <ListTable 
                             columns={listTableColumns} 
-                            data={listTableRows} 
+                            rows={listTableRows} 
                             columnsPerRow={listTableColumnsPerRow} 
                             rowsPerPage={listTableRowsPerPage}
+                            searchList={setListSearch}
                         />
                     </Grid>
                 </Paper>

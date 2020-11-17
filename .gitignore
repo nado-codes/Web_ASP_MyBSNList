@@ -8,3 +8,13 @@ packages
 ASP_MyBSNList_Server/App_Data/aspnet-ASP_MyBSNList-20200717024621_log.ldf
 ASP_MyBSNList_Server/App_Data/aspnet-ASP_MyBSNList-20200717024621.mdf
 *.mdf
+.vs/*
+.vs\*
+.vs/ASP_MyBSNList/config/applicationhost.config
+.vs/ASP_MyBSNList/v16/.suo
+.vs/ASP_MyBSNList/v16/TestStore/0/000.testlog
+.vs/ASP_MyBSNList/v16/TestStore/0/testlog.manifest
+.vs/ASP_MyBSNList/config/applicationhost.config
+.vs/ASP_MyBSNList/v16/.suo
+.vs/ASP_MyBSNList/v16/TestStore/0/000.testlog
+.vs/ASP_MyBSNList/v16/TestStore/0/testlog.manifest

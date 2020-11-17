@@ -55,6 +55,7 @@ namespace ASP_MyBSNList.Controllers.Api
             }
         }
 
+        //GET
         [HttpGet]
         [Route("{id:int}")]
         public virtual Person GetPersonById(int id)
@@ -65,17 +66,41 @@ namespace ASP_MyBSNList.Controllers.Api
         }
 
         [HttpGet]
+        [Route("")]
+        public virtual IEnumerable<Person> GetPersonsByList(string list)
+        {
+            return PersonProvider.GetPersonsByList(list);
+        }
+
+        [HttpGet]
         [Route("name")]
         public virtual IEnumerable<Person> GetPersonsWithName([FromUri] string q)
         {
             return PersonProvider.SearchPersonsByName(q);
         }
 
-        [HttpGet]
+        //POST
+        [HttpPost]
         [Route("")]
-        public virtual IEnumerable<Person> GetPersonsByList(string list)
+        public virtual Person AddPerson([FromBody] Person person)
         {
-            return PersonProvider.GetPersonsByList(list);
+            return PersonProvider.AddPerson(person);
+        }
+
+        //PATCH
+        [HttpPatch]
+        [Route("")]
+        public virtual long UpdatePerson([FromBody] Person person)
+        {
+            return 0; //PersonProvider.UpdatePerson(person);
+        }
+
+        //DELETE
+        [HttpDelete]
+        [Route("")]
+        public virtual long DeletePersonById([FromBody] Person person)
+        {
+            return PersonProvider.DeletePerson(person);
         }
     }
 }

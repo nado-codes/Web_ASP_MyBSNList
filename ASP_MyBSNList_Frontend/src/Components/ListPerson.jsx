@@ -54,8 +54,6 @@ const ListPerson = (props) => {
         SafeName
     } = props?.data ?? props;
 
-    console.log(props);
-
     return (
         <NavLink to={`/person/${Id}`} className={classes.rootLink}>
             <Button variant="contained" className={classes.root}>

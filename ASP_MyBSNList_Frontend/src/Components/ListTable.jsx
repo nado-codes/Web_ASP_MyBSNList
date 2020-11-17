@@ -3,9 +3,14 @@ import {makeStyles} from '@material-ui/core';
 import { Grid, Paper} from '@material-ui/core';
 import {Pagination} from '@material-ui/lab';
 
-import {DialogMode, TableForm} from '../Components/TableForm';
+import TableForm, {
+    DialogMode,
+    TableFormField, 
+    TableFormFieldType as FieldType } from '../Components/TableForm';
+
 import OptionButton from '../Components/OptionButton';
 import CardPerson from '../Components/CardPerson';
+import axios from 'axios';
 
 const styles = {
     toolbarButton: {
@@ -27,7 +32,6 @@ const useStyle = makeStyles((theme) => ({
         paddingTop: '10px',
         minHeight: '500px',
         maxHeight: '500px',
-        
     },
     column: {
         padding: '10px',
@@ -46,16 +50,17 @@ const useStyle = makeStyles((theme) => ({
 
 const ListTable = (props) => {
 
-    const {theme} = props;
+    const {theme, onPersonAdded} = props;
     const classes = useStyle(theme);
-    const {data} = props;
 
     const [columnsPerRow,setColumnsPerRow] = useState(props.columnsPerRow);
-    const [rowsPerPage,setRowsPerPage] = useState(props.rowsPerPage);
+    const [rowsPerPage,setRowsPerPage] = useState([props.rowsPerPage]);
     
+    const [rows,setRows] = useState([]);
     const [numPages,setNumPages] = useState(0);
     const [page,setPage] = useState(1);
     const [sortedPages,setSortedPages] = useState([]);
+    const [lastAddedPerson,setLastAddedPerson] = useState(undefined);
 
     // ADD PERSON FORM
     const [formIsOpen,setFormIsOpen] = useState(false);
@@ -63,14 +68,14 @@ const ListTable = (props) => {
     const [formBody,setFormBody] = useState(undefined);
     const [formHandleAffirm,setFormHandleAffirm] = useState(undefined);
     const [formHandleDeny,setFormHandleDeny] = useState(undefined);
-    const [formMode,setFormMode] = useState()
+    const [formMode,setFormMode] = useState(DialogMode.PROMPT);
+    const [formFields,setFormFields] = useState([]);
+    const [formEditState,setFormEditState] = useState({});
 
     // CONSTANTS
 
     const pageStrings = {
-        ADD_NEW: "Add New",
-        ADD_PERSON: "Add Person",
-        DIALOG_PERSON_DESC: "Enter some information about this person",
+        ADD_NEW: "Add New"
     }
 
     const dialogStrings = {
@@ -81,11 +86,35 @@ const ListTable = (props) => {
         DELETE_PERSON_DESC: "This cannot be undone. Continue?",
     }
 
+    const lists = [
+        {Id: 1, Name: 'A'},
+        {Id: 2, Name: 'B'},
+        {Id: 3, Name: 'C'}
+    ];
+
+    const ListMap = {
+        A: lists[0],
+        B: lists[1],
+        C: lists[2],
+    };
+
+    const dialogFields = {
+        ADDEDIT: [
+            TableFormField({id: 'Name', label: 'Name'}),
+            TableFormField({
+                id: 'List', 
+                label: 'List', 
+                type: FieldType.SELECT, 
+                items: lists
+            })
+        ]
+    }
+
     const sortData = useCallback(() => {
 
         const newSortedPages = [];
 
-        const numPages = Math.round(data?.length / (rowsPerPage*columnsPerRow));
+        const numPages = Math.round(rows?.length / (rowsPerPage*columnsPerRow));
 
         for(var page = 0; page < numPages; page++)
         {
@@ -101,7 +130,7 @@ const ListTable = (props) => {
                 {
                     const index = (rowStart+pageStart+column);
                     
-                    newRow[column] = data[index];
+                    newRow[column] = rows[index];
                 }
             
                 newPage[row] = newRow;
@@ -112,24 +141,41 @@ const ListTable = (props) => {
 
         setNumPages(numPages);
         setSortedPages(newSortedPages);
-    },[data,columnsPerRow,rowsPerPage]);
+    },[rows,columnsPerRow,rowsPerPage]);
+
+    useEffect(() => {
+
+        
+        setRows(props.rows);
+        //setFormHandleDeny(() => {});
+        console.log("refreshing")
+        
+
+        if(lastAddedPerson)
+        {
+            setPage(numPages);
+            setLastAddedPerson(undefined);
+        }
+        
+    },[props.rows]);
 
     useEffect(() => {
         sortData();
 
-        setFormHandleDeny(() => {});
+    },[rows,sortData])
+
+    useEffect(() => {
         setColumnsPerRow(props.columnsPerRow);
         setRowsPerPage(props.rowsPerPage);
-        
-    },[props.columnsPerRow,props.rowsPerPage, sortData]);
+    },[props.columnsPerRow,props.rowsPerPage])
 
     const handleCloseForm = () => {
         setFormIsOpen(false);
     }
-    const handleFormAffirmClicked = () => {
+    const handleFormAffirmClicked = (e,editState) => {
         try
         {
-            formHandleAffirm();
+            formHandleAffirm(e,editState);
             handleCloseForm();
         }
         catch
@@ -156,24 +202,48 @@ const ListTable = (props) => {
 
     const handleAddPersonClicked = () => {
         setFormTitle(dialogStrings.ADD_PERSON);
-        setFormBody(pageStrings.DIALOG_PERSON_DESC);
+        setFormBody(dialogStrings.DIALOG_PERSON_DESC);
         setFormHandleAffirm(() => handleAddPerson);
+        setFormMode(DialogMode.INPUT);
+        setFormFields(dialogFields.ADDEDIT);
+        setFormEditState({
+            Name: '',
+            List: 'C'
+        });
         setFormIsOpen(true);
     }
 
-    const handleDeletePersonClicked = () => {
+    const handleDeletePersonClicked = (id) => {
         setFormTitle(dialogStrings.DELETE_PERSON);
-        setFormBody(pageStrings.DELETE_PERSON_DESC);
+        setFormBody(dialogStrings.DELETE_PERSON_DESC);
         setFormHandleAffirm(() => handleDeletePerson);
+        setFormMode(DialogMode.CONFIRM);
+        setFormFields([]);
+        setFormEditState({ Id: id });
         setFormIsOpen(true);
     }
 
-    const handleAddPerson = () => {
+    const handleAddPerson = async (e,editState) => {
         console.log("add person");
+        console.log(editState);
+
+        const personsUrl = `api/person`;
+        const personsData = (await axios.post(personsUrl,editState)).data;
+
+        const newRows = [...rows,personsData];
+
+        onPersonAdded(personsData);
+        setRows(newRows);
     }
 
-    const handleDeletePerson = () => {
-        console.log("add person");
+    const handleDeletePerson = async (e,editState) => {
+        console.log("delete person /w id "+editState.Id);
+
+        const personsUrl = `api/person`;
+        const personsData = (await axios({method: 'delete', url: personsUrl,data: editState})).data;
+
+        const newRows = rows.filter(x => x.Id !== editState.Id);
+        setRows(newRows);
     }
 
     return(
@@ -187,7 +257,7 @@ const ListTable = (props) => {
                                     {y && 
                                     <CardPerson 
                                         data={y} 
-                                        indexNum={data.indexOf(y)}
+                                        indexNum={rows.indexOf(y)}
                                         onDeleteClicked={handleDeletePersonClicked}
                                     />}
                                 </Grid>);
@@ -197,7 +267,7 @@ const ListTable = (props) => {
                 </Grid>
                 <Grid container direction='row'>
                     <Grid item>
-                        <Pagination count={numPages} onChange={handleChangePageClicked}/>
+                        <Pagination count={numPages} page={page} onChange={handleChangePageClicked}/>
                     </Grid>
                     <Grid item className={classes.toolbarContainer}>
                         <OptionButton click={handleAddPersonClicked} text={pageStrings.ADD_NEW} styles={styles}/>
@@ -210,6 +280,8 @@ const ListTable = (props) => {
                 title={formTitle}
                 body={formBody}
                 mode={formMode}
+                fieldsInfo={formFields}
+                editState={formEditState}
                 handleAffirm={handleFormAffirmClicked}
                 handleDeny={handleFormDenyClicked}
                 onClose={handleCloseForm}
@@ -221,6 +293,7 @@ const ListTable = (props) => {
 ListTable.defaultProps = {
     handleFormAffirm : () => {},
     handleFormDeny: () => {},
+    onPersonAdded: () => {},
 }
 
 export default ListTable;

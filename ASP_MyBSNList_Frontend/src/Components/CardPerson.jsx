@@ -130,6 +130,10 @@ const CardPerson = (props) => {
         setIsLockNavigation(false);
     }
 
+    const handleDeleteClicked = () => {
+        onDeleteClicked(Id);
+    }
+
     return (
     <Paper 
         className={classes.rootPaper}
@@ -149,7 +153,7 @@ const CardPerson = (props) => {
                     <CardTools 
                         onMouseEnter={lockNavigation} 
                         onMouseLeave={releaseNavigation}
-                        onDeleteClicked={onDeleteClicked}
+                        onDeleteClicked={handleDeleteClicked}
                     />}
             </Grid>
         </NavLink>

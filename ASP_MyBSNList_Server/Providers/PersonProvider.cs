@@ -11,6 +11,7 @@ namespace ASP_MyBSNList.Providers
 {
     public sealed class PersonProvider
     {
+        #region UtilityMethods
         private static IEnumerable<Person> QueryPersons(Func<Person,bool> predicate)
         {
             return DbController.Context.People
@@ -35,6 +36,8 @@ namespace ASP_MyBSNList.Providers
                 .Include(p => p.MartialStatus)
                 .SingleOrDefault(predicate);
         }
+        #endregion
+
         public static IEnumerable<Person> GetAll()
         {
             return DbController.Context.People
@@ -47,9 +50,14 @@ namespace ASP_MyBSNList.Providers
                 .Include(p => p.MartialStatus);
         }
 
+        //GET
         public static Person GetPersonById(int id)
         {
             return QueryPerson((p) => p.Id == id);
+        }
+        public static IEnumerable<Person> GetPersonsByList(string list)
+        {
+            return QueryPersons((p) => p.List.Equals(list, StringComparison.OrdinalIgnoreCase));
         }
 
         public static IEnumerable<Person> SearchPersonsByName(string query)
@@ -57,9 +65,43 @@ namespace ASP_MyBSNList.Providers
             return QueryPersons((p) => p.Name.Substring(0, query.Length).ToLower().Equals(query.ToLower()));
         }
 
-        public static IEnumerable<Person> GetPersonsByList(string list)
+        //POST
+        public static Person AddPerson(Person person)
         {
-            return QueryPersons((p) => p.List.Equals(list, StringComparison.OrdinalIgnoreCase));
+            try
+            {
+                Person newPerson = DbController.Context.People.Add(person);
+                DbController.Context.SaveChanges();
+
+                return newPerson;
+            }
+            catch (Exception e)
+            {
+                
+            }
+
+            return null;
+        }
+
+        //PUT
+
+        //DELETE
+        public static long DeletePerson(Person person)
+        {
+            try
+            { 
+            Person oldPerson = DbController.Context.People.SingleOrDefault(p => p.Id == person.Id);
+            DbController.Context.People.Remove(oldPerson);
+            DbController.Context.SaveChanges();
+
+            return 1;
+            }
+            catch(Exception e)
+            {
+
+            }
+
+            return 0;
         }
     }
 }

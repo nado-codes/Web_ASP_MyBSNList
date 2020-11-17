@@ -8,7 +8,13 @@ import {
   DialogContent,
   DialogContentText,
   TextField,
-  Button
+  Button,
+  Select,
+  Input,
+  InputLabel,
+  MenuItem,
+  Box,
+  makeStyles
 } from '@material-ui/core/';
 
 const DialogMode = {
@@ -17,13 +23,37 @@ const DialogMode = {
   PROMPT: 2,
 }
 
-const TableFormField = (props) => {
-
+const TableFormFieldType = {
+  TEXT : 0,
+  SELECT: 1
 }
+const TableFormField = (props) => {
+  const {
+    id,
+    label,
+    type = TableFormFieldType.TEXT,
+    defaultValue = "",
+    items,
+  } = props;
+
+  return {id, label, type, defaultValue, items};
+}
+
+TableFormField.propTypes = {
+  id: PropTypes.number.isRequired,
+  label: PropTypes.string.isRequired,
+}
+
+const useStyles = makeStyles((theme) => ({
+  fieldContainer: {
+    marginTop: '10px',
+  },
+}));
 
 const TableForm = (props) => {
 
     const {
+      theme,
       title,
       body,
       handleAffirm,
@@ -33,8 +63,10 @@ const TableForm = (props) => {
       fieldsInfo,
     } = props;
 
+    const classes = useStyles(theme);
     const [isOpen,setIsOpen] = useState(props.isOpen);
     const [fields,setFields] = useState(props.fields);
+    const [editState,setEditState] = useState(props.editState ?? {});
 
     const strings = 
     {
@@ -50,37 +82,113 @@ const TableForm = (props) => {
     const parseFormFields = useCallback(() => {
       
       const newFields = fieldsInfo?.map(x => {
+          const fieldId = x.id.replace(' ','');
+          const fieldLabel = x.label;
+          const esValue = editState?.[fieldId] ?? x.items?.[0].Id ?? x.defaultValue;
 
+          if(x.type === TableFormFieldType.TEXT) {
+            return (
+              <TextField
+                key={fieldsInfo.indexOf(x)}
+                id={fieldId}
+                label={fieldLabel}
+                type={Object.keys(TableFormFieldType)[x.type].toLowerCase()}
+                onChange={handleFieldChanged}
+                defaultValue={esValue ?? ''}
+              />
+            )
+          } 
+          else if (x.type === TableFormFieldType.SELECT) {
+
+            editState[fieldId] = esValue ?? -1;
+
+            const castSelectValue = (value) => {
+              return x.items.find(y => y.Name === value || y.Id === value).Id;
+            }
+            
+            return (
+              <Box className={classes.fieldContainer}>
+                <InputLabel htmlFor={fieldId}>{fieldLabel}</InputLabel>
+                <Select
+                  key={fieldsInfo.indexOf(x)}
+                  label={fieldLabel}
+                  value={castSelectValue(esValue) ?? 1}
+                  id={fieldId}
+                  label={fieldLabel}
+                  input={<Input id={fieldId}/>}
+                  onChange={(e) => {
+                    e.target.id = fieldId;
+                    handleFieldChanged(e);
+                  }}
+                  defaultValue={x.defaultValue}
+                >
+                  {x.items.map(y => (<MenuItem key={y.Id} value={y.Id} name={fieldId}>
+                      {y.Name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
+            )
+          }
+          else {
+            //unknown field type
+          }
       }) ?? [];
 
       setFields(newFields);
-    },[setFields]);
+    },[setFields,fieldsInfo,editState]);
 
     useEffect(() => {
-      //loadData();
-      parseFormFields();
       setIsOpen(props.isOpen);
-    },[parseFormFields,props.isOpen,props.fields]);
+      setEditState(props.editState);
+      console.log("effect external");
+    },[props.isOpen]);
+
+    useEffect(() => {
+      parseFormFields();
+      console.log("effect internal");
+    },[parseFormFields,editState])
 
     const handleAffirmClicked = (e) => {
-      handleAffirm?.(e) ?? onClose();
+
+      const itemsFields = fieldsInfo.filter(x => x.items);
+      const newEditState = {...editState};
+      
+      itemsFields.forEach(x => {
+        const fieldItems = itemsFields.find(y => y.id === x.id).items;
+        const esValue = editState[x.id];
+
+        newEditState[x.id] = fieldItems[esValue-1]?.Name ?? esValue;
+      });
+
+      handleAffirm?.(e,newEditState) ?? onClose();
     }
 
     const handleDenyClicked = (e) => {
-      handleDeny?.(e) ?? onClose();
+      handleDeny?.(e,editState) ?? onClose();
+    }
+
+    const tryParseBool = (value) => {
+      return value === 'true' || value === 'false' ? value === 'true' : value;
+    }
+
+    const handleFieldChanged = (e) => {
+
+      const target = e.target;
+
+      const newEditState = {
+        ...editState, [target.id] : tryParseBool(target.value)
+      }
+
+      setEditState(newEditState);
     }
 
     return (
-      <Dialog open={isOpen}>
+      <Dialog open={isOpen} onClose={handleDeny}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
             <DialogContentText>{body}</DialogContentText>
-            <TextField 
-            autoFocus
-            id="name"
-            label ="Name"
-            type='text'
-            />
+            {fields?.map(x => x)}
             
         </DialogContent>
         <DialogActions>
@@ -107,4 +215,5 @@ TableForm.defaultProps = {
   mode : DialogMode.INPUT,
 }
 
-export {TableForm,TableFormField, DialogMode};
+export default TableForm;
+export { TableFormField,TableFormFieldType, DialogMode };
