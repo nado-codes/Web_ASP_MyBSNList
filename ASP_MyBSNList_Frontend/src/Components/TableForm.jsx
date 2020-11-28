@@ -17,6 +17,8 @@ import {
   makeStyles
 } from '@material-ui/core/';
 
+import {Alert, AlertTitle} from '@material-ui/lab/';
+
 const DialogMode = {
   INPUT: 0,
   CONFIRM: 1,
@@ -56,6 +58,7 @@ const TableForm = (props) => {
       theme,
       title,
       body,
+      error,
       handleAffirm,
       handleDeny,
       onClose,
@@ -79,8 +82,42 @@ const TableForm = (props) => {
       PROMPT_DENY: "Cancel",
     }
 
+    const handleAffirmClicked = (e) => {
+
+      const itemsFields = fieldsInfo.filter(x => x.items);
+      const newEditState = {...editState};
+      
+      itemsFields.forEach(x => {
+        const fieldItems = itemsFields.find(y => y.id === x.id).items;
+        const esValue = editState[x.id];
+
+        newEditState[x.id] = fieldItems[esValue-1]?.Name ?? esValue;
+      });
+
+      handleAffirm?.(e,newEditState) ?? onClose();
+    }
+
+    const handleDenyClicked = (e) => {
+      handleDeny?.(e,editState) ?? onClose();
+    }
+
     const parseFormFields = useCallback(() => {
       
+      const tryParseBool = (value) => {
+        return value === 'true' || value === 'false' ? value === 'true' : value;
+      }
+
+      const handleFieldChanged = (e) => {
+
+        const target = e.target;
+  
+        const newEditState = {
+          ...editState, [target.id] : tryParseBool(target.value)
+        }
+  
+        setEditState(newEditState);
+      }
+
       const newFields = fieldsInfo?.map(x => {
           const fieldId = x.id.replace(' ','');
           const fieldLabel = x.label;
@@ -107,14 +144,13 @@ const TableForm = (props) => {
             }
             
             return (
-              <Box className={classes.fieldContainer}>
+              <Box key={fieldId+" container"} className={classes.fieldContainer}>
                 <InputLabel htmlFor={fieldId}>{fieldLabel}</InputLabel>
                 <Select
                   key={fieldsInfo.indexOf(x)}
                   label={fieldLabel}
                   value={castSelectValue(esValue) ?? 1}
                   id={fieldId}
-                  label={fieldLabel}
                   input={<Input id={fieldId}/>}
                   onChange={(e) => {
                     e.target.id = fieldId;
@@ -136,57 +172,29 @@ const TableForm = (props) => {
       }) ?? [];
 
       setFields(newFields);
-    },[setFields,fieldsInfo,editState]);
+    },[setFields,classes.fieldContainer,fieldsInfo,editState]);
 
     useEffect(() => {
       setIsOpen(props.isOpen);
       setEditState(props.editState);
       console.log("effect external");
-    },[props.isOpen]);
+    },[props.isOpen,props.editState]);
 
     useEffect(() => {
       parseFormFields();
       console.log("effect internal");
     },[parseFormFields,editState])
 
-    const handleAffirmClicked = (e) => {
-
-      const itemsFields = fieldsInfo.filter(x => x.items);
-      const newEditState = {...editState};
-      
-      itemsFields.forEach(x => {
-        const fieldItems = itemsFields.find(y => y.id === x.id).items;
-        const esValue = editState[x.id];
-
-        newEditState[x.id] = fieldItems[esValue-1]?.Name ?? esValue;
-      });
-
-      handleAffirm?.(e,newEditState) ?? onClose();
-    }
-
-    const handleDenyClicked = (e) => {
-      handleDeny?.(e,editState) ?? onClose();
-    }
-
-    const tryParseBool = (value) => {
-      return value === 'true' || value === 'false' ? value === 'true' : value;
-    }
-
-    const handleFieldChanged = (e) => {
-
-      const target = e.target;
-
-      const newEditState = {
-        ...editState, [target.id] : tryParseBool(target.value)
-      }
-
-      setEditState(newEditState);
-    }
-
     return (
       <Dialog open={isOpen} onClose={handleDeny}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
+              {error && 
+                <Alert severity="error">
+                  <AlertTitle>Error</AlertTitle>
+                  {error}
+                </Alert>
+              }
             <DialogContentText>{body}</DialogContentText>
             {fields?.map(x => x)}
             

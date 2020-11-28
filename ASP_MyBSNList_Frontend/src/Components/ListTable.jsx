@@ -50,7 +50,7 @@ const useStyle = makeStyles((theme) => ({
 
 const ListTable = (props) => {
 
-    const {theme, onPersonAdded} = props;
+    const {theme} = props;
     const classes = useStyle(theme);
 
     const [columnsPerRow,setColumnsPerRow] = useState(props.columnsPerRow);
@@ -58,19 +58,20 @@ const ListTable = (props) => {
     
     const [rows,setRows] = useState([]);
     const [numPages,setNumPages] = useState(0);
-    const [page,setPage] = useState(1);
+    const [page,setPage] = useState(props.page);
     const [sortedPages,setSortedPages] = useState([]);
-    const [lastAddedPerson,setLastAddedPerson] = useState(undefined);
+    //const [lastAddedPerson,setLastAddedPerson] = useState(undefined);
 
     // ADD PERSON FORM
     const [formIsOpen,setFormIsOpen] = useState(false);
     const [formTitle,setFormTitle] = useState(undefined);
     const [formBody,setFormBody] = useState(undefined);
     const [formHandleAffirm,setFormHandleAffirm] = useState(undefined);
-    const [formHandleDeny,setFormHandleDeny] = useState(undefined);
+    const formHandleDeny = undefined; //[formHandleDeny,setFormHandleDeny] = useState(undefined);
     const [formMode,setFormMode] = useState(DialogMode.PROMPT);
     const [formFields,setFormFields] = useState([]);
     const [formEditState,setFormEditState] = useState({});
+    const [formError,setFormError] = useState(undefined);
 
     // CONSTANTS
 
@@ -91,12 +92,6 @@ const ListTable = (props) => {
         {Id: 2, Name: 'B'},
         {Id: 3, Name: 'C'}
     ];
-
-    const ListMap = {
-        A: lists[0],
-        B: lists[1],
-        C: lists[2],
-    };
 
     const dialogFields = {
         ADDEDIT: [
@@ -148,14 +143,13 @@ const ListTable = (props) => {
         
         setRows(props.rows);
         //setFormHandleDeny(() => {});
-        console.log("refreshing")
         
 
-        if(lastAddedPerson)
+        /*if(lastAddedPerson)
         {
             setPage(numPages);
             setLastAddedPerson(undefined);
-        }
+        }*/
         
     },[props.rows]);
 
@@ -169,31 +163,50 @@ const ListTable = (props) => {
         setRowsPerPage(props.rowsPerPage);
     },[props.columnsPerRow,props.rowsPerPage])
 
+    window.onerror = (err) => {
+        handleFormError(err);
+    }
+
     const handleCloseForm = () => {
         setFormIsOpen(false);
     }
     const handleFormAffirmClicked = (e,editState) => {
+        clearFormError();
+
         try
         {
             formHandleAffirm(e,editState);
             handleCloseForm();
         }
-        catch
+        catch (err)
         {
-
+            handleFormError(err);
+            console.log("error occured");
         }
     }   
 
     const handleFormDenyClicked = () => {
+        clearFormError();
+
         try
         {
             formHandleDeny();
             handleCloseForm();
         }
-        catch
+        catch (err)
         {
-            
+            handleFormError(err);
         }
+    }
+
+    const handleFormError = (error) => {
+        const message = error.response?.data.ExceptionMessage ?? "Unknown Error";
+
+        setFormError(error ? message : undefined);
+    }
+
+    const clearFormError = () => {
+        setFormError(undefined);
     }
 
     const handleChangePageClicked = (e,page) => {
@@ -224,26 +237,42 @@ const ListTable = (props) => {
     }
 
     const handleAddPerson = async (e,editState) => {
-        console.log("add person");
-        console.log(editState);
+        
+        try
+        {
+            const personsUrl = `api/person`;
+            const personsData = (await axios.post(personsUrl,editState)).data;
 
-        const personsUrl = `api/person`;
-        const personsData = (await axios.post(personsUrl,editState)).data;
+            console.log("add person");
+            console.log(editState);
 
-        const newRows = [...rows,personsData];
+            window.location = `/person/${personsData.Id}`;
 
-        onPersonAdded(personsData);
-        setRows(newRows);
+            //const newRows = [...rows,personsData];
+            //setRows(newRows);
+        } catch (err) {
+            handleFormError(err);
+        }
     }
 
     const handleDeletePerson = async (e,editState) => {
+
+        try
+        {
         console.log("delete person /w id "+editState.Id);
 
         const personsUrl = `api/person`;
         const personsData = (await axios({method: 'delete', url: personsUrl,data: editState})).data;
 
+        if(personsData !== 1)
+            console.error("Error deleting person - expected one row to be updated, got 0");
+
         const newRows = rows.filter(x => x.Id !== editState.Id);
         setRows(newRows);
+        }
+        catch (err) {
+            console.error(err);
+        }
     }
 
     return(
@@ -251,9 +280,13 @@ const ListTable = (props) => {
             <Grid container className={classes.root}>
                 <Grid container direction={'row'} className={classes.grid}>
                     {sortedPages[page-1]?.map(x => {
-                        return (<Grid container key={sortedPages[page-1]?.indexOf(x)} className={classes.row}>
+                        const rowIndex = sortedPages[page-1]?.indexOf(x);
+
+                        return (<Grid container key={rowIndex} className={classes.row}>
                             {x.map(y => {
-                                return (<Grid item key={x.indexOf(y)} className={classes.column}>
+                                const columnIndex = rowIndex+""+x.indexOf(y);
+
+                                return (<Grid item key={columnIndex} className={classes.column}>
                                     {y && 
                                     <CardPerson 
                                         data={y} 
@@ -267,7 +300,7 @@ const ListTable = (props) => {
                 </Grid>
                 <Grid container direction='row'>
                     <Grid item>
-                        <Pagination count={numPages} page={page} onChange={handleChangePageClicked}/>
+                        <Pagination count={numPages} onChange={handleChangePageClicked}/>
                     </Grid>
                     <Grid item className={classes.toolbarContainer}>
                         <OptionButton click={handleAddPersonClicked} text={pageStrings.ADD_NEW} styles={styles}/>
@@ -280,6 +313,7 @@ const ListTable = (props) => {
                 title={formTitle}
                 body={formBody}
                 mode={formMode}
+                error={formError}
                 fieldsInfo={formFields}
                 editState={formEditState}
                 handleAffirm={handleFormAffirmClicked}

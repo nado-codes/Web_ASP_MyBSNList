@@ -31,7 +31,7 @@ const ListView = (props) => {
     ];
     const [listTableRows,setListTableRows] = useState([]);
     const [listTableColumnsPerRow,setListTableColumnsPerRow] = useState(3);
-    const [listTableRowsPerPage,setListTableRowsPerPage] = useState(3);
+    const listTableRowsPerPage = 3;
     const [listSearch,setListSearch] = useState('a');
 
     const loadData = useCallback(async () => {
@@ -41,7 +41,7 @@ const ListView = (props) => {
         setListTableRows(listData);
 
         handleResize(window.innerWidth,0);
-    },[setListTableRows,listSearch]);
+    },[listSearch,setListTableRows]);
 
     useEffect(() => {
         loadData();
@@ -86,12 +86,12 @@ const ListView = (props) => {
                         <span style={{fontWeight: 'bold', fontSize: '25px',}}>{listSearch.toUpperCase()+' List'}</span>
                     </Grid>
                     <Grid item className={classes.tableContainer}>
-                        <ListTable 
+                        <ListTable
+                            page={1}
                             columns={listTableColumns} 
                             rows={listTableRows} 
                             columnsPerRow={listTableColumnsPerRow} 
                             rowsPerPage={listTableRowsPerPage}
-                            searchList={setListSearch}
                         />
                     </Grid>
                 </Paper>

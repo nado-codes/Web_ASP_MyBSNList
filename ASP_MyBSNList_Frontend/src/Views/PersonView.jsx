@@ -10,13 +10,17 @@ import {makeStyles,
     Tab,
     Tabs,
     Table,
+    TableBody,
     TableRow,
     TableCell} from '@material-ui/core';
+
+import EditField from '../Components/EditField';
 
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ChatIcon from '@material-ui/icons/Chat';
 import ForumIcon from '@material-ui/icons/Forum';
 import NotesIcon from '@material-ui/icons/Notes';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import axios from 'axios';
 
@@ -61,6 +65,11 @@ const useStyles = makeStyles((theme) => ({
     {
         marginRight: '5px',
     },
+    buttonIconRed:
+    {
+        marginRight: '5px',
+        color: 'red',
+    },
     textSecondary: {
         color: 'black',
     },
@@ -103,7 +112,7 @@ const PersonView = (props) => {
     const {theme} = props;
     const classes = useStyles(theme);
     const {id} = useParams();
-    const safe = true;
+    const safe = false;
 
     const [personData,setPersonData] = useState(undefined);
     const personColumns = {
@@ -196,32 +205,34 @@ const PersonView = (props) => {
                     <Grid item className={classes.leftPanelDetails}> {/*LEFT DETAILS*/}
                     <Typography variant="h5" className={classes.sectionTitle}>Details</Typography>
                         <Table>
-                            <TableRow>
-                                <TableCell>
-                                    <Grid container direction={'column'}>
-                                        <Grid item> {/*COUNTRY*/}
-                                            <Typography variant="h6" className={classes.sectionTitle}>{personData?.[personColumns.Country.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.Country.DisplayName}</Typography>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>
+                                        <Grid container direction={'column'}>
+                                            <Grid item> {/*COUNTRY*/}
+                                                <Typography variant="h6" className={classes.sectionTitle}>{personData?.[personColumns.Country.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.Country.DisplayName}</Typography>
+                                            </Grid>
+                                            <Grid item> {/*CITY*/}
+                                                <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.City.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.City.DisplayName}</Typography>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item> {/*CITY*/}
-                                            <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.City.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.City.DisplayName}</Typography>
-                                        </Grid>
-                                    </Grid>
-                            
-                                </TableCell>
-                            </TableRow>
 
-                            <TableRow>
-                                <TableCell>
-                                    <Grid container direction={'column'}>
-                                        <Grid item> {/*INDUSTRY*/}
-                                            <Typography variant="h6" className={classes.sectionTitle}>{personData?.[personColumns.Industry.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.Industry.DisplayName}</Typography>
+                                    </TableCell>
+                                </TableRow>
+
+                                <TableRow>
+                                    <TableCell>
+                                        <Grid container direction={'column'}>
+                                            <Grid item> {/*INDUSTRY*/}
+                                                <Typography variant="h6" className={classes.sectionTitle}>{personData?.[personColumns.Industry.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.Industry.DisplayName}</Typography>
+                                            </Grid>
+                                            <Grid item> {/*OCCUPATION*/}
+                                                <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Occupation.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.Occupation.DisplayName}</Typography>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item> {/*OCCUPATION*/}
-                                            <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Occupation.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.Occupation.DisplayName}</Typography>
-                                        </Grid>
-                                    </Grid>
-                                </TableCell>
-                            </TableRow>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
                         </Table>
                     </Grid>
                 </Grid>
@@ -233,6 +244,7 @@ const PersonView = (props) => {
                         <Grid container direction="row"> {/*LIST*/}
                             <Box className={classes.greyRounded}><Typography className={classes.greyRoundedText} variant="h6">{(personData?.[personColumns.List.Id] ?? personColumns.NA.DisplayName) + personColumns.List.DisplayName}</Typography></Box> 
                             <Button style={{marginLeft: '140px'}}><ChatIcon className={classes.buttonIcon} /> Start Conversation</Button>
+                            <Button style={{marginLeft: '5px'}}><DeleteIcon className={classes.buttonIconRed} /> <span className={classes.buttonIconRed}>Delete</span></Button>
                         </Grid>
                     </Grid>
                     <Grid item>
@@ -240,42 +252,45 @@ const PersonView = (props) => {
                     </Grid>
                     <Grid container direction="column" className={classes.profileSection}>
                         <Table className={classes.rightPanelTable} size="small">
-                            <TableRow> {/*GENDER*/}
+                            <TableBody>
+                            <TableRow>{/*GENDER*/}
                                 <TableCell className={classes.rightPanelTableCell}>{personColumns.Gender.DisplayName}</TableCell>
                                 <TableCell>
                                     <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Gender.Id] ? personColumns.Gender.MALE : personColumns.Gender.FEMALE ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
                             </TableRow>
-                            <TableRow> {/*NATIONALITY*/}
+                            <TableRow>{/*NATIONALITY*/}
                                 <TableCell>{personColumns.Nationality.DisplayName}</TableCell>
                                 <TableCell>
-                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Nationality.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
+                                    {/*<Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Nationality.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName}</Typography>*/}
+                                    <EditField/>
                                 </TableCell>
                             </TableRow>
-                            <TableRow> {/*MARITAL STATUS*/}
+                            <TableRow>{/*MARITAL STATUS*/}
                                 <TableCell>{personColumns.MaritalStatus.DisplayName}</TableCell>
                                 <TableCell>
                                     <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.MaritalStatus.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
                             </TableRow>
-                            <TableRow> {/*AGE GROUP*/}
+                            <TableRow>{/*AGE GROUP*/}
                                 <TableCell>{personColumns.AgeGroup.DisplayName}</TableCell>
                                 <TableCell>
                                     <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.AgeGroup.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
                             </TableRow>
-                            <TableRow> {/*HAS KIDS*/}
+                            <TableRow>{/*HAS KIDS*/}
                                 <TableCell>{personColumns.HasKids.DisplayName}</TableCell>
                                 <TableCell>
                                     <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.HasKids.Id] ? personColumns.HasKids.TRUE : personColumns.HasKids.FALSE ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
                             </TableRow>
-                            <TableRow> {/*LAST CONTACT*/}
+                            <TableRow>{/*LAST CONTACT*/}
                                 <TableCell>{personColumns.LastContact.DisplayName}</TableCell>
                                 <TableCell>
                                     <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.LastContact.Id] ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
-                            </TableRow>
+                             </TableRow>
+                            </TableBody>
                         </Table>
                         <Grid item className={classes.profileSection}>
                             

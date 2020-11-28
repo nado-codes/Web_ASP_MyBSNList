@@ -6,6 +6,9 @@ using System.Data.Entity;
 using ASP_MyBSNList.Controllers;
 using ASP_MyBSNList.Controllers.Database;
 using ASP_MyBSNList.Models;
+using System.Web.Http;
+using System.Net;
+using System.Net.Http;
 
 namespace ASP_MyBSNList.Providers
 {
@@ -35,6 +38,11 @@ namespace ASP_MyBSNList.Providers
                 .Include(p => p.Occupation)
                 .Include(p => p.MartialStatus)
                 .SingleOrDefault(predicate);
+        }
+
+        private static bool ExistsWithName(string name)
+        {
+            return (DbController.Context.People.SingleOrDefault(p => p.Name == name) != null);
         }
         #endregion
 
@@ -68,19 +76,20 @@ namespace ASP_MyBSNList.Providers
         //POST
         public static Person AddPerson(Person person)
         {
-            try
+            if(ExistsWithName(person.Name))
             {
-                Person newPerson = DbController.Context.People.Add(person);
-                DbController.Context.SaveChanges();
+                var response = new HttpResponseMessage(HttpStatusCode.Conflict)
+                {
+                    Content = new StringContent("ALREADY_EXIST")
+                };
 
-                return newPerson;
-            }
-            catch (Exception e)
-            {
-                
+                throw new HttpResponseException(response);
             }
 
-            return null;
+            Person newPerson = DbController.Context.People.Add(person);
+            DbController.Context.SaveChanges();
+
+            return newPerson;
         }
 
         //PUT
@@ -89,17 +98,14 @@ namespace ASP_MyBSNList.Providers
         public static long DeletePerson(Person person)
         {
             try
-            { 
-            Person oldPerson = DbController.Context.People.SingleOrDefault(p => p.Id == person.Id);
-            DbController.Context.People.Remove(oldPerson);
-            DbController.Context.SaveChanges();
-
-            return 1;
-            }
-            catch(Exception e)
             {
+                Person oldPerson = DbController.Context.People.SingleOrDefault(p => p.Id == person.Id);
+                DbController.Context.People.Remove(oldPerson);
+                DbController.Context.SaveChanges();
 
+                return 1;
             }
+            catch { }
 
             return 0;
         }
