@@ -263,7 +263,10 @@ const PersonView = (props) => {
                                 <TableCell>{personColumns.Nationality.DisplayName}</TableCell>
                                 <TableCell>
                                     {/*<Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Nationality.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName}</Typography>*/}
-                                    <EditField/>
+                                    <EditField 
+                                        name={personColumns.Nationality.Id}
+                                        onValueUpdated={(name,value) => setPersonData({...personData,[[personColumns.Nationality.Id].Name]: value})}
+                                        value={personData?.[personColumns.Nationality.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName}/>
                                 </TableCell>
                             </TableRow>
                             <TableRow>{/*MARITAL STATUS*/}
