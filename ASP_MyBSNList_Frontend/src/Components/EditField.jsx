@@ -5,6 +5,7 @@ import {makeStyles, Box, Typography, IconButton, TextField} from '@material-ui/c
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import EditIcon from '@material-ui/icons/Edit';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const EditField = (props) => {
 
-    const {theme, name, onValueUpdated} = props;
+    const {theme, name, onValueUpdated, dataUrl, defaultColumns} = props;
     const classes = useStyles(theme);
 
     const [value,setValue] = useState(props.value);
@@ -42,6 +43,32 @@ const EditField = (props) => {
     const [isHover,setIsHover] = useState(false);
     const [isEdit,setIsEdit] = useState(false);
 
+    const [acData,setAcData] = useState([]);
+
+    useEffect(() => {
+
+        const loadData = async () => {
+            if(isEdit)
+            {
+                try
+                {
+                    const data = (await axios({
+                        method:'GET',
+                        url: dataUrl,
+                        baseURL: '/',
+                    })).data;
+
+                    setAcData(data);
+                }
+                catch(err) {
+                    console.error(err);
+                }
+            }
+        }
+
+        loadData();
+        
+    },[isEdit])
     useEffect(() => 
     {
         window.onkeyup = handleKeyPress;
@@ -49,8 +76,12 @@ const EditField = (props) => {
     },[value])
 
     const handleWindowClick = (hideOnWindowClick) => {
+        
         if(hideOnWindowClick)
             handleUpdateValue();
+
+        console.log("click");
+        console.log(`window will ${!hideOnWindowClick ? 'not' : ''} be hidden`);
     }
 
     const handleKeyPress = (e) => {
@@ -60,7 +91,7 @@ const EditField = (props) => {
     }
 
     const handleUpdateValue = () => {
-        console.log("value updated: "+name+"="+value);
+        console.log("value updated: "+name+"="+value.Name);
         setIsEdit(false);
         window.onmousedown = undefined;
         window.onkeypress = undefined;
@@ -75,6 +106,8 @@ const EditField = (props) => {
         if(!isEdit)
             setShowEditButton(true);
 
+        console.log("mouse enter");
+
         setIsHover(true);
         
         window.onmousedown = () => {handleWindowClick(false)};
@@ -83,15 +116,17 @@ const EditField = (props) => {
     const handleMouseLeave = () => {
         setShowEditButton(false);
 
+        console.log("mouse leave");
+
         setIsHover(false);
 
         window.onmousedown = () => {handleWindowClick(true)};  
     }
 
-    const handleTextChanged = (e) => {
+    const handleACChanged = (e,value) => {
         //console.log("text: "+e.target.value);
-        setValue(e.target.value);
-        
+        setValue(value);
+        handleUpdateValue();
     }
 
     const handleEditClick = () => {
@@ -105,11 +140,20 @@ const EditField = (props) => {
         <Box className={classes.root} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             {!isEdit && (
                 <Typography className={classes.text}>
-                    {value}
+                    {acData.includes(value) ? value.Name : defaultColumns.EMPTYORNULL.DisplayName}
                 </Typography>
             )}
             {isEdit && (
-                <Autocomplete/>
+                <Autocomplete 
+                    value={value ? value !== "Unknown " ? value : null : null}
+                    options={acData} 
+                    id="combo-box-demo"
+                    getOptionLabel={(option) => option?.Name ?? ""}
+                    style={{ width: 200 }}
+                    onChange={handleACChanged}
+                    renderInput={(params) => <TextField {...params} />}
+                    
+                />
                 /*<TextField className={classes.textField} onChange={handleTextChanged} value={value}/>*/
                 
             )}

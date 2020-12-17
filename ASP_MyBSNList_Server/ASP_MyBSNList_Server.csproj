@@ -179,7 +179,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\ConversationsController.cs" />
-    <Compile Include="Controllers\Api\HelloWorldController.cs" />
+    <Compile Include="Controllers\Api\CountriesController.cs" />
     <Compile Include="Controllers\Api\ListController.cs" />
     <Compile Include="Controllers\Api\PersonController.cs" />
     <Compile Include="Controllers\DbController.cs" />

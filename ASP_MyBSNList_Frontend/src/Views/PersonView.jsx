@@ -115,6 +115,15 @@ const PersonView = (props) => {
     const safe = false;
 
     const [personData,setPersonData] = useState(undefined);
+
+    const defaultColumns = {
+        EMPTYORNULL: {
+            DisplayName: "Unknown "
+        },
+        NA: {
+            DisplayName: "N/A"
+        },
+    }
     const personColumns = {
         Name: {
             Id: "Name", DisplayName: "Name"
@@ -164,12 +173,6 @@ const PersonView = (props) => {
         Person: {
             Id: "Person", DisplayName: "Person"
         },
-        EMPTYORNULL: {
-            DisplayName: "Unknown "
-        },
-        NA: {
-            DisplayName: "N/A"
-        },
     }
 
     const loadPersonData = useCallback(async () => {
@@ -210,10 +213,10 @@ const PersonView = (props) => {
                                     <TableCell>
                                         <Grid container direction={'column'}>
                                             <Grid item> {/*COUNTRY*/}
-                                                <Typography variant="h6" className={classes.sectionTitle}>{personData?.[personColumns.Country.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.Country.DisplayName}</Typography>
+                                                <Typography variant="h6" className={classes.sectionTitle}>{personData?.[personColumns.Country.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.Country.DisplayName}</Typography>
                                             </Grid>
                                             <Grid item> {/*CITY*/}
-                                                <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.City.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.City.DisplayName}</Typography>
+                                                <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.City.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.City.DisplayName}</Typography>
                                             </Grid>
                                         </Grid>
 
@@ -224,10 +227,10 @@ const PersonView = (props) => {
                                     <TableCell>
                                         <Grid container direction={'column'}>
                                             <Grid item> {/*INDUSTRY*/}
-                                                <Typography variant="h6" className={classes.sectionTitle}>{personData?.[personColumns.Industry.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.Industry.DisplayName}</Typography>
+                                                <Typography variant="h6" className={classes.sectionTitle}>{personData?.[personColumns.Industry.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.Industry.DisplayName}</Typography>
                                             </Grid>
                                             <Grid item> {/*OCCUPATION*/}
-                                                <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Occupation.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName+personColumns.Occupation.DisplayName}</Typography>
+                                                <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Occupation.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.Occupation.DisplayName}</Typography>
                                             </Grid>
                                         </Grid>
                                     </TableCell>
@@ -239,10 +242,10 @@ const PersonView = (props) => {
                 <Grid container direction={'column'} className={classes.rightPanelRoot}>
                     <Grid item>
                         <Grid item>                      {/*NAME*/}
-                            <Typography variant="h4" className={classes.sectionTitle}>{(safe ? personData?.SafeName : personData?.Name) ?? personColumns.EMPTYORNULL.DisplayName+personColumns.Person.DisplayName}</Typography>
+                            <Typography variant="h4" className={classes.sectionTitle}>{(safe ? personData?.SafeName : personData?.Name) ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.Person.DisplayName}</Typography>
                         </Grid>
                         <Grid container direction="row"> {/*LIST*/}
-                            <Box className={classes.greyRounded}><Typography className={classes.greyRoundedText} variant="h6">{(personData?.[personColumns.List.Id] ?? personColumns.NA.DisplayName) + personColumns.List.DisplayName}</Typography></Box> 
+                            <Box className={classes.greyRounded}><Typography className={classes.greyRoundedText} variant="h6">{(personData?.[personColumns.List.Id] ?? defaultColumns.NA.DisplayName) + personColumns.List.DisplayName}</Typography></Box> 
                             <Button style={{marginLeft: '140px'}}><ChatIcon className={classes.buttonIcon} /> Start Conversation</Button>
                             <Button style={{marginLeft: '5px'}}><DeleteIcon className={classes.buttonIconRed} /> <span className={classes.buttonIconRed}>Delete</span></Button>
                         </Grid>
@@ -256,41 +259,44 @@ const PersonView = (props) => {
                             <TableRow>{/*GENDER*/}
                                 <TableCell className={classes.rightPanelTableCell}>{personColumns.Gender.DisplayName}</TableCell>
                                 <TableCell>
-                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Gender.Id] ? personColumns.Gender.MALE : personColumns.Gender.FEMALE ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
+                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Gender.Id] ? personColumns.Gender.MALE : personColumns.Gender.FEMALE ?? defaultColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
                             </TableRow>
                             <TableRow>{/*NATIONALITY*/}
                                 <TableCell>{personColumns.Nationality.DisplayName}</TableCell>
                                 <TableCell>
-                                    {/*<Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Nationality.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName}</Typography>*/}
+                                    {/*<Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Nationality.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName}</Typography>*/}
                                     <EditField 
                                         name={personColumns.Nationality.Id}
                                         onValueUpdated={(name,value) => setPersonData({...personData,[[personColumns.Nationality.Id].Name]: value})}
-                                        value={personData?.[personColumns.Nationality.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName}/>
+                                        value={personData?.[personColumns.Nationality.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName}
+                                        dataUrl={"api/countries"}
+                                        defaultColumns={defaultColumns}
+                                        />
                                 </TableCell>
                             </TableRow>
                             <TableRow>{/*MARITAL STATUS*/}
                                 <TableCell>{personColumns.MaritalStatus.DisplayName}</TableCell>
                                 <TableCell>
-                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.MaritalStatus.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
+                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.MaritalStatus.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
                             </TableRow>
                             <TableRow>{/*AGE GROUP*/}
                                 <TableCell>{personColumns.AgeGroup.DisplayName}</TableCell>
                                 <TableCell>
-                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.AgeGroup.Id]?.Name ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
+                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.AgeGroup.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
                             </TableRow>
                             <TableRow>{/*HAS KIDS*/}
                                 <TableCell>{personColumns.HasKids.DisplayName}</TableCell>
                                 <TableCell>
-                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.HasKids.Id] ? personColumns.HasKids.TRUE : personColumns.HasKids.FALSE ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
+                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.HasKids.Id] ? personColumns.HasKids.TRUE : personColumns.HasKids.FALSE ?? defaultColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
                             </TableRow>
                             <TableRow>{/*LAST CONTACT*/}
                                 <TableCell>{personColumns.LastContact.DisplayName}</TableCell>
                                 <TableCell>
-                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.LastContact.Id] ?? personColumns.EMPTYORNULL.DisplayName}</Typography>
+                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.LastContact.Id] ?? defaultColumns.EMPTYORNULL.DisplayName}</Typography>
                                 </TableCell>
                              </TableRow>
                             </TableBody>
