@@ -20,6 +20,7 @@ namespace ASP_MyBSNList.Providers
             return DbController.Context.People
                 .Include(p => p.PrimaryCommunication)
                 .Include(p => p.SecondaryCommunication)
+                .Include(p => p.Nationality)
                 .Include(p => p.AgeGroup)
                 .Include(p => p.City)
                 .Include(p => p.Industry)
@@ -32,6 +33,7 @@ namespace ASP_MyBSNList.Providers
             return DbController.Context.People
                 .Include(p => p.PrimaryCommunication)
                 .Include(p => p.SecondaryCommunication)
+                .Include(p => p.Nationality)
                 .Include(p => p.AgeGroup)
                 .Include(p => p.City)
                 .Include(p => p.Industry)
@@ -51,6 +53,7 @@ namespace ASP_MyBSNList.Providers
             return DbController.Context.People
                 .Include(p => p.PrimaryCommunication)
                 .Include(p => p.SecondaryCommunication)
+                .Include(p => p.Nationality)
                 .Include(p => p.AgeGroup)
                 .Include(p => p.City)
                 .Include(p => p.Industry)
@@ -93,6 +96,24 @@ namespace ASP_MyBSNList.Providers
         }
 
         //PUT
+        public static long UpdatePerson(Person person)
+        {
+            try
+            {
+                Person oldPerson = DbController.Context.People.SingleOrDefault(p => p.Id == person.Id);
+                oldPerson.Copy(person);
+
+                DbController.Context.SaveChanges();
+
+                return 1;
+            }
+            catch(Exception e)
+            {
+
+            }
+
+            return 0;
+        }
 
         //DELETE
         public static long DeletePerson(Person person)

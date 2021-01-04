@@ -89,18 +89,18 @@ namespace ASP_MyBSNList.Controllers.Api
             return PersonProvider.AddPerson(person);
         }
 
-        //PATCH
-        [HttpPatch]
+        //PUT
+        [HttpPut]
         [Route("")]
         public virtual long UpdatePerson([FromBody] Person person)
         {
-            return 0; //PersonProvider.UpdatePerson(person);
+            return PersonProvider.UpdatePerson(person);
         }
 
         //DELETE
         [HttpDelete]
         [Route("")]
-        public virtual long DeletePersonById([FromBody] Person person)
+        public virtual long DeletePerson([FromBody] Person person)
         {
             return PersonProvider.DeletePerson(person);
         }

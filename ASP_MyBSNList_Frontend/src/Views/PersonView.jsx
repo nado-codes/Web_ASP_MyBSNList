@@ -114,7 +114,7 @@ const PersonView = (props) => {
     const {id} = useParams();
     const safe = false;
 
-    const [personData,setPersonData] = useState(undefined);
+    const [personData,setPersonData] = useState({});
 
     const defaultColumns = {
         EMPTYORNULL: {
@@ -183,7 +183,7 @@ const PersonView = (props) => {
             baseURL: '/',
         })).data;
 
-        //console.log(personData);
+        console.log(personData);
 
         setPersonData(personData);
     },[id]);
@@ -194,9 +194,25 @@ const PersonView = (props) => {
 
     const [value, setValue] = useState(0);
 
-    const handleChange = (event, newValue) => {
+    const hangleChangeTab = (e, newValue) => {
         setValue(newValue);
     };
+
+    const handleUpdateValue = async (name,value) => {
+
+        console.log("updating "+name);
+        const newPersonData = {...personData, [name]: value};
+
+        const personURL = 'api/person/';
+        const personResponse = (await axios({
+            method:'PUT',
+            data: newPersonData,
+            url: personURL,
+            baseURL: '/',
+        })).data;
+
+        setPersonData(newPersonData);
+    }
 
     return(
         <Paper className={classes.root}>
@@ -265,10 +281,10 @@ const PersonView = (props) => {
                             <TableRow>{/*NATIONALITY*/}
                                 <TableCell>{personColumns.Nationality.DisplayName}</TableCell>
                                 <TableCell>
-                                    {/*<Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Nationality.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName}</Typography>*/}
+                                    
                                     <EditField 
                                         name={personColumns.Nationality.Id}
-                                        onValueUpdated={(name,value) => setPersonData({...personData,[[personColumns.Nationality.Id].Name]: value})}
+                                        onValueUpdated={handleUpdateValue}
                                         value={personData?.[personColumns.Nationality.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName}
                                         dataUrl={"api/countries"}
                                         defaultColumns={defaultColumns}
@@ -307,7 +323,7 @@ const PersonView = (props) => {
                     </Grid>
                     <Grid item className={classes.profileSection} style={{marginTop: '10px'}}>
                         <AppBar position="static" className={classes.profileTabs}>
-                          <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+                          <Tabs value={value} onChange={hangleChangeTab} aria-label="simple tabs example">
                             <Tab label={<div><NotesIcon style={{verticalAlign: 'middle'}} /> Remarks </div>}/>
                             <Tab label={<div><ForumIcon style={{verticalAlign: 'middle'}} /> Messages </div>}/>
                           </Tabs>

@@ -72,7 +72,7 @@ const EditField = (props) => {
     useEffect(() => 
     {
         window.onkeyup = handleKeyPress;
-        console.log("value updated (ub): "+value);
+        //console.log("value updated (ub): "+value);
     },[value])
 
     const handleWindowClick = (hideOnWindowClick) => {
@@ -80,8 +80,7 @@ const EditField = (props) => {
         if(hideOnWindowClick)
             handleUpdateValue();
 
-        console.log("click");
-        console.log(`window will ${!hideOnWindowClick ? 'not' : ''} be hidden`);
+        //console.log(`window will ${!hideOnWindowClick ? 'not' : ''} be hidden`);
     }
 
     const handleKeyPress = (e) => {
@@ -90,8 +89,7 @@ const EditField = (props) => {
             handleUpdateValue();
     }
 
-    const handleUpdateValue = () => {
-        console.log("value updated: "+name+"="+value.Name);
+    const handleUpdateValue = (value) => {
         setIsEdit(false);
         window.onmousedown = undefined;
         window.onkeypress = undefined;
@@ -106,7 +104,7 @@ const EditField = (props) => {
         if(!isEdit)
             setShowEditButton(true);
 
-        console.log("mouse enter");
+        //console.log("mouse enter");
 
         setIsHover(true);
         
@@ -116,7 +114,7 @@ const EditField = (props) => {
     const handleMouseLeave = () => {
         setShowEditButton(false);
 
-        console.log("mouse leave");
+        //console.log("mouse leave");
 
         setIsHover(false);
 
@@ -124,9 +122,9 @@ const EditField = (props) => {
     }
 
     const handleACChanged = (e,value) => {
-        //console.log("text: "+e.target.value);
+        console.log("text: "+e.target.value);
         setValue(value);
-        handleUpdateValue();
+        handleUpdateValue(value);
     }
 
     const handleEditClick = () => {
