@@ -26,6 +26,9 @@ namespace ASP_MyBSNList.Models
         public byte? SecondaryCommunicationId { get; set; }
         public CommunicationType SecondaryCommunication { get; set; }
 
+        public byte? CountryId { get; set; }
+        public Country Country { get; set; }
+
         public byte? NationalityId { get; set; }
         public Country Nationality { get; set; }
 

@@ -123,7 +123,11 @@ const PersonView = (props) => {
         NA: {
             DisplayName: "N/A"
         },
+        OPTIONS: {
+            Confirm: [{Id: 0, Name: "Yes"}, {Id: 1, Name: "No"}]
+        }
     }
+
     const personColumns = {
         Name: {
             Id: "Name", DisplayName: "Name"
@@ -150,7 +154,7 @@ const PersonView = (props) => {
             Id: "Industry", DisplayName: "Industry"
         },
         MaritalStatus: {
-            Id: "MaritalStatus", DisplayName: "Marital Status"
+            Id: "MartialStatus", DisplayName: "Marital Status"
         },
         AgeGroup: {
             Id: "AgeGroup", DisplayName: "Age Group"
@@ -168,11 +172,18 @@ const PersonView = (props) => {
             Id: "List", DisplayName: " List"
         },
         Gender: {
-            Id: "Gender", DisplayName: "Gender", MALE: "Male", FEMALE: "Female"
+            Id: "Gender", DisplayName: "Gender", Options: [{Id: 0, Name: "Male"}, {Id: 1, Name: "Female"}]
         },
         Person: {
             Id: "Person", DisplayName: "Person"
         },
+    }
+
+    const Options = {
+        GENDER: [
+            {Id: 0, Name: "Male"},
+            {Id: 1, Name: "Female"}
+        ]
     }
 
     const loadPersonData = useCallback(async () => {
@@ -203,6 +214,8 @@ const PersonView = (props) => {
         console.log("updating "+name);
         const newPersonData = {...personData, [name]: value};
 
+        console.log(newPersonData);
+
         const personURL = 'api/person/';
         const personResponse = (await axios({
             method:'PUT',
@@ -229,10 +242,24 @@ const PersonView = (props) => {
                                     <TableCell>
                                         <Grid container direction={'column'}>
                                             <Grid item> {/*COUNTRY*/}
-                                                <Typography variant="h6" className={classes.sectionTitle}>{personData?.[personColumns.Country.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.Country.DisplayName}</Typography>
+                                                <EditField 
+                                                    variant="h6"
+                                                    className={classes.sectionTitle} 
+                                                    name={personColumns.Country.Id}
+                                                    onValueUpdated={handleUpdateValue}
+                                                    value={personData?.[personColumns.Country.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.Country.DisplayName}
+                                                    dataUrl={"api/countries"}
+                                                    defaultColumns={defaultColumns}
+                                                />
                                             </Grid>
                                             <Grid item> {/*CITY*/}
-                                                <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.City.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.City.DisplayName}</Typography>
+                                            <EditField
+                                                    name={personColumns.Country.Id}
+                                                    onValueUpdated={handleUpdateValue}
+                                                    value={personData?.[personColumns.City.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.City.DisplayName}
+                                                    dataUrl={"api/cities"}
+                                                    defaultColumns={defaultColumns}
+                                                />
                                             </Grid>
                                         </Grid>
 
@@ -273,40 +300,65 @@ const PersonView = (props) => {
                         <Table className={classes.rightPanelTable} size="small">
                             <TableBody>
                             <TableRow>{/*GENDER*/}
-                                <TableCell className={classes.rightPanelTableCell}>{personColumns.Gender.DisplayName}</TableCell>
+                                <TableCell>{personColumns.Gender.DisplayName}</TableCell>
                                 <TableCell>
-                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Gender.Id] ? personColumns.Gender.MALE : personColumns.Gender.FEMALE ?? defaultColumns.EMPTYORNULL.DisplayName}</Typography>
+                                    <EditField 
+                                        name={personColumns.Gender.Id}
+                                        onValueUpdated={handleUpdateValue}
+                                        value={personColumns.Gender.Options[personData?.[personColumns.Gender.Id]]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName}
+                                        options={personColumns.Gender.Options}
+                                        useOptionId
+                                        defaultColumns={defaultColumns}
+                                    />
                                 </TableCell>
                             </TableRow>
                             <TableRow>{/*NATIONALITY*/}
                                 <TableCell>{personColumns.Nationality.DisplayName}</TableCell>
                                 <TableCell>
-                                    
                                     <EditField 
                                         name={personColumns.Nationality.Id}
                                         onValueUpdated={handleUpdateValue}
                                         value={personData?.[personColumns.Nationality.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName}
                                         dataUrl={"api/countries"}
                                         defaultColumns={defaultColumns}
-                                        />
+                                    />
                                 </TableCell>
                             </TableRow>
                             <TableRow>{/*MARITAL STATUS*/}
                                 <TableCell>{personColumns.MaritalStatus.DisplayName}</TableCell>
                                 <TableCell>
-                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.MaritalStatus.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName}</Typography>
+                                    <EditField 
+                                        name={personColumns.MaritalStatus.Id}
+                                        onValueUpdated={handleUpdateValue}
+                                        value={personData?.[personColumns.MaritalStatus.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName}
+                                        dataUrl={"api/maritalstatuses"}
+                                        defaultColumns={defaultColumns}
+                                    />
                                 </TableCell>
                             </TableRow>
                             <TableRow>{/*AGE GROUP*/}
                                 <TableCell>{personColumns.AgeGroup.DisplayName}</TableCell>
                                 <TableCell>
-                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.AgeGroup.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName}</Typography>
+                                    <EditField 
+                                        name={personColumns.AgeGroup.Id}
+                                        onValueUpdated={handleUpdateValue}
+                                        value={personData?.[personColumns.AgeGroup.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName}
+                                        dataUrl={"api/agegroups"}
+                                        defaultColumns={defaultColumns}
+                                    />
                                 </TableCell>
                             </TableRow>
                             <TableRow>{/*HAS KIDS*/}
                                 <TableCell>{personColumns.HasKids.DisplayName}</TableCell>
                                 <TableCell>
-                                    <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.HasKids.Id] ? personColumns.HasKids.TRUE : personColumns.HasKids.FALSE ?? defaultColumns.EMPTYORNULL.DisplayName}</Typography>
+                                    <EditField 
+                                        name={personColumns.HasKids.Id}
+                                        onValueUpdated={handleUpdateValue}
+                                        value={defaultColumns.OPTIONS.Confirm[personData?.[personColumns.HasKids.Id] ? 1 : 0]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName}
+                                        options={defaultColumns.OPTIONS.Confirm}
+                                        useOptionId
+                                        defaultColumns={defaultColumns}
+                                    />
                                 </TableCell>
                             </TableRow>
                             <TableRow>{/*LAST CONTACT*/}

@@ -178,10 +178,18 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\AgeGroupsController.cs" />
+    <Compile Include="Controllers\Api\CitiesController.cs" />
+    <Compile Include="Controllers\Api\CommunicationTypesController.cs" />
     <Compile Include="Controllers\Api\ConversationsController.cs" />
     <Compile Include="Controllers\Api\CountriesController.cs" />
+    <Compile Include="Controllers\Api\IndustriesController.cs" />
     <Compile Include="Controllers\Api\ListController.cs" />
+    <Compile Include="Controllers\Api\MaritalStatusesController.cs" />
+    <Compile Include="Controllers\Api\OccupationsController.cs" />
     <Compile Include="Controllers\Api\PersonController.cs" />
+    <Compile Include="Controllers\Api\ReasonsController.cs" />
+    <Compile Include="Controllers\Api\StatusesController.cs" />
     <Compile Include="Controllers\DbController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -292,6 +300,10 @@
     <Compile Include="Migrations\202010070216546_ADD_ForeignKeys_Persons.cs" />
     <Compile Include="Migrations\202010070216546_ADD_ForeignKeys_Persons.Designer.cs">
       <DependentUpon>202010070216546_ADD_ForeignKeys_Persons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101061927087_AddCountryToPerson.cs" />
+    <Compile Include="Migrations\202101061927087_AddCountryToPerson.Designer.cs">
+      <DependentUpon>202101061927087_AddCountryToPerson.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -458,6 +470,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010070216546_ADD_ForeignKeys_Persons.resx">
       <DependentUpon>202010070216546_ADD_ForeignKeys_Persons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101061927087_AddCountryToPerson.resx">
+      <DependentUpon>202101061927087_AddCountryToPerson.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

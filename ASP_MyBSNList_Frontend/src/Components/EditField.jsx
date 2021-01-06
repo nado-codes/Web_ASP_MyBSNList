@@ -12,11 +12,11 @@ const useStyles = makeStyles((theme) => ({
         position: 'relative',
         width: '200px',
         height: '20px',
+        background: 'red',
     },
     text: {
         marginTop: '4px',
         fontSize: '15px',
-        display: 'inline',
     },
     textField: {
         marginTop: '-5px',
@@ -34,16 +34,16 @@ const useStyles = makeStyles((theme) => ({
 
 const EditField = (props) => {
 
-    const {theme, name, onValueUpdated, dataUrl, defaultColumns} = props;
+    const {theme, variant, className, name, value, onValueUpdated, dataUrl, options, useOptionId, defaultColumns} = props;
     const classes = useStyles(theme);
 
-    const [value,setValue] = useState(props.value);
+    //const [value,setValue] = useState(props.value);
 
     const [showEditButton,setShowEditButton] = useState(false);
     const [isHover,setIsHover] = useState(false);
     const [isEdit,setIsEdit] = useState(false);
 
-    const [acData,setAcData] = useState([]);
+    const [acData,setAcData] = useState(undefined);
 
     useEffect(() => {
 
@@ -66,13 +66,13 @@ const EditField = (props) => {
             }
         }
 
-        loadData();
+        if(dataUrl)
+            loadData();
         
     },[isEdit])
     useEffect(() => 
     {
         window.onkeyup = handleKeyPress;
-        //console.log("value updated (ub): "+value);
     },[value])
 
     const handleWindowClick = (hideOnWindowClick) => {
@@ -80,7 +80,7 @@ const EditField = (props) => {
         if(hideOnWindowClick)
             handleUpdateValue();
 
-        //console.log(`window will ${!hideOnWindowClick ? 'not' : ''} be hidden`);
+        console.log("check click");
     }
 
     const handleKeyPress = (e) => {
@@ -93,7 +93,7 @@ const EditField = (props) => {
         setIsEdit(false);
         window.onmousedown = undefined;
         window.onkeypress = undefined;
-        onValueUpdated(name,value);
+        onValueUpdated(name,useOptionId ? value?.Id : value);
 
         if(isHover)
             setShowEditButton(true);
@@ -103,27 +103,22 @@ const EditField = (props) => {
 
         if(!isEdit)
             setShowEditButton(true);
-
-        //console.log("mouse enter");
+        else
+            window.onmousedown = () => {handleWindowClick(false)};
 
         setIsHover(true);
-        
-        window.onmousedown = () => {handleWindowClick(false)};
     }
 
     const handleMouseLeave = () => {
         setShowEditButton(false);
 
-        //console.log("mouse leave");
-
         setIsHover(false);
 
-        window.onmousedown = () => {handleWindowClick(true)};  
+        if(isEdit)
+            window.onmousedown = () => {handleWindowClick(true)};  
     }
 
     const handleACChanged = (e,value) => {
-        console.log("text: "+e.target.value);
-        setValue(value);
         handleUpdateValue(value);
     }
 
@@ -133,26 +128,24 @@ const EditField = (props) => {
         
         window.onkeyup = handleKeyPress;
     }
-
+    
     return (
         <Box className={classes.root} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             {!isEdit && (
-                <Typography className={classes.text}>
-                    {acData.includes(value) ? value.Name : defaultColumns.EMPTYORNULL.DisplayName}
+                <Typography variant={variant} className={className ? className : classes.text} style={{display: 'inline'}}>
+                    {value?.Name ?? value ?? defaultColumns.EMPTYORNULL.DisplayName}
                 </Typography>
             )}
             {isEdit && (
                 <Autocomplete 
                     value={value ? value !== "Unknown " ? value : null : null}
-                    options={acData} 
-                    id="combo-box-demo"
+                    options={acData ?? options} 
+                    id={"ef_ac_"+name}
                     getOptionLabel={(option) => option?.Name ?? ""}
                     style={{ width: 200 }}
                     onChange={handleACChanged}
                     renderInput={(params) => <TextField {...params} />}
-                    
                 />
-                /*<TextField className={classes.textField} onChange={handleTextChanged} value={value}/>*/
                 
             )}
             {showEditButton && (
