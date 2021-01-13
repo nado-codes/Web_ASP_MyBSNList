@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
         position: 'relative',
         width: '200px',
         height: '20px',
-        background: 'red',
     },
     text: {
         marginTop: '4px',
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const EditField = (props) => {
 
-    const {theme, variant, className, name, value, onValueUpdated, dataUrl, options, useOptionId, defaultColumns} = props;
+    const {theme, variant, style, className, name, value, onValueUpdated, dataUrl, options = [], useOptionId, defaultColumns} = props;
     const classes = useStyles(theme);
 
     //const [value,setValue] = useState(props.value);
@@ -43,7 +42,7 @@ const EditField = (props) => {
     const [isHover,setIsHover] = useState(false);
     const [isEdit,setIsEdit] = useState(false);
 
-    const [acData,setAcData] = useState(undefined);
+    const [acData,setAcData] = useState([]);
 
     useEffect(() => {
 
@@ -130,7 +129,7 @@ const EditField = (props) => {
     }
     
     return (
-        <Box className={classes.root} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <Box className={classes.root} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={style}>
             {!isEdit && (
                 <Typography variant={variant} className={className ? className : classes.text} style={{display: 'inline'}}>
                     {value?.Name ?? value ?? defaultColumns.EMPTYORNULL.DisplayName}

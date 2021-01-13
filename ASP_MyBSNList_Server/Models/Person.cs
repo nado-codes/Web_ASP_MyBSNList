@@ -57,34 +57,17 @@ namespace ASP_MyBSNList.Models
         {
             List = person.List;
             Gender = person.Gender;
-
             PrimaryCommunicationId = person.PrimaryCommunication?.Id;
-            //PrimaryCommunication = person.PrimaryCommunication;
-
             SecondaryCommunicationId = person.SecondaryCommunication?.Id;
-            //SecondaryCommunication = person.SecondaryCommunication;
-
             NationalityId = person.Nationality?.Id;
-            //Nationality = person.Nationality;
-
+            CountryId = person.Country?.Id;
             CityId = person.City?.Id;
-            //City = person.City;
-
             OccupationId = person.Occupation?.Id;
-            //Occupation = person.Occupation;
-
             IndustryId = person.Industry?.Id;
-            //Industry = person.Industry;
-
             MartialStatusId = person.MartialStatus?.Id;
-            //MartialStatus = person.MartialStatus;
-
             AgeGroupId = person.AgeGroup?.Id;
-            //AgeGroup = person.AgeGroup;
-
             HasKids = person.HasKids;
             Remarks = person.Remarks;
-
             LastContact = person.LastContact;
             DateAdded = DateTime.Now;
         }

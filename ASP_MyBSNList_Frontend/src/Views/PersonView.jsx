@@ -33,11 +33,15 @@ const useStyles = makeStyles((theme) => ({
         marginTop: '10px',
     },
     profileTabs: {
-        background: 'black',
-        color: 'white',
+        background: '#000000',
+        color: '#FFFFFF',
     },
     sectionTitle: {
         fontWeight: 'bold',
+    },
+    sectionTitleB: {
+        fontWeight: 'bold',
+        marginBottom: '10px',
     },
     leftPanelRoot: {
         flex: 0.33,
@@ -68,23 +72,23 @@ const useStyles = makeStyles((theme) => ({
     buttonIconRed:
     {
         marginRight: '5px',
-        color: 'red',
+        color: '#FF0000',
     },
     textSecondary: {
-        color: 'black',
+        color: '#000000',
     },
     greyRounded: {
-        background: 'black',
+        background: '#000000',
         borderRadius: '8px',
         width: '75px',
         textAlign: 'center',
 
         '& Typography' : {
-            color: 'white',
+            color: '#FFF',
         },
     },
     greyRoundedText: {
-        color: 'white',
+        color: '#FFFFFF',
     },
 }));
 
@@ -244,7 +248,8 @@ const PersonView = (props) => {
                                             <Grid item> {/*COUNTRY*/}
                                                 <EditField 
                                                     variant="h6"
-                                                    className={classes.sectionTitle} 
+                                                    style={{marginBottom: '10px'}}
+                                                    className={classes.sectionTitleB} 
                                                     name={personColumns.Country.Id}
                                                     onValueUpdated={handleUpdateValue}
                                                     value={personData?.[personColumns.Country.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.Country.DisplayName}
@@ -253,12 +258,12 @@ const PersonView = (props) => {
                                                 />
                                             </Grid>
                                             <Grid item> {/*CITY*/}
-                                            <EditField
-                                                    name={personColumns.Country.Id}
-                                                    onValueUpdated={handleUpdateValue}
-                                                    value={personData?.[personColumns.City.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.City.DisplayName}
-                                                    dataUrl={"api/cities"}
-                                                    defaultColumns={defaultColumns}
+                                                <EditField
+                                                        name={personColumns.City.Id}
+                                                        onValueUpdated={handleUpdateValue}
+                                                        value={personData?.[personColumns.City.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.City.DisplayName}
+                                                        dataUrl={"api/cities"}
+                                                        defaultColumns={defaultColumns}
                                                 />
                                             </Grid>
                                         </Grid>
@@ -270,10 +275,25 @@ const PersonView = (props) => {
                                     <TableCell>
                                         <Grid container direction={'column'}>
                                             <Grid item> {/*INDUSTRY*/}
-                                                <Typography variant="h6" className={classes.sectionTitle}>{personData?.[personColumns.Industry.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.Industry.DisplayName}</Typography>
+                                                <EditField
+                                                    variant="h6"
+                                                    style={{marginBottom: '10px'}}
+                                                    className={classes.sectionTitleB} 
+                                                    name={personColumns.Industry.Id}
+                                                    onValueUpdated={handleUpdateValue}
+                                                    value={personData?.[personColumns.Industry.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.Industry.DisplayName}
+                                                    dataUrl={"api/industries"}
+                                                    defaultColumns={defaultColumns}
+                                                />
                                             </Grid>
                                             <Grid item> {/*OCCUPATION*/}
-                                                <Typography style={{fontSize: '15px'}}>{personData?.[personColumns.Occupation.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.Occupation.DisplayName}</Typography>
+                                                <EditField
+                                                        name={personColumns.Occupation.Id}
+                                                        onValueUpdated={handleUpdateValue}
+                                                        value={personData?.[personColumns.Occupation.Id]?.Name ?? defaultColumns.EMPTYORNULL.DisplayName+personColumns.Occupation.DisplayName}
+                                                        dataUrl={"api/occupations"}
+                                                        defaultColumns={defaultColumns}
+                                                />
                                             </Grid>
                                         </Grid>
                                     </TableCell>
@@ -381,10 +401,13 @@ const PersonView = (props) => {
                           </Tabs>
                         </AppBar>
                         <TabPanel value={value} index={0}>
-                          Item One
+                            {/*Details*/}
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                          Item Two
+                            {/*Remarks*/}
+                        </TabPanel>
+                        <TabPanel value={value} index={2}>
+                            {/*Messages*/}
                         </TabPanel>
                     </Grid>
                 </Grid>     
